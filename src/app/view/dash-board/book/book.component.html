@@ -1,0 +1,191 @@
+<div class="row content-wrapper table-container position-relative">
+    <div [ngClass]="studentService.buttonCount==1 ? 'overlay': ''"></div>
+    <div class="col-12 mb-4">
+        <div class="mat-elevation-z8">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h3>All Book data</h3>
+                            </div>
+                        </div>
+                        <div class="row" style="font-size:14px">
+                            <div class="col-6 d-flex justify-content-center">
+                                <mat-form-field appearance="legacy"[style.width.%]=60>
+                                    <input #txtSearchRegNo matInput (keyup)="clearSearch(txtSearchRegNo.value.trim())" (keyup.enter)="applyFilterByRegisterNumber($event)" placeholder="Search by Registration Number" #input>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6 d-flex justify-content-center">
+                                <mat-form-field appearance="legacy"[style.width.%]=60>
+                                    <input #txtSearchName matInput (keyup)="clearSearch(txtSearchName.value.trim())" matInput (keyup.enter)="applyFilterByStudentName($event)" placeholder="Search by Name" #input>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <mat-accordion class="example-headers-align" multi>
+                                    <mat-expansion-panel (opened)="advanceSearchPanelOpen()"
+                                                         (closed)="panelOpenState = false">
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                {{panelOpenState?'Hide Advanced Search':'Show Advanced Search'}}
+                                            </mat-panel-title>
+                                            <mat-panel-description>
+                                                <mat-icon>search</mat-icon>
+                                            </mat-panel-description>
+                                        </mat-expansion-panel-header>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-8 d-flex align-items-center justify-content-between">
+                                                        <mat-form-field #txtGrade appearance="fill">
+                                                            <mat-label>Select Grade</mat-label>
+                                                            <mat-select [(ngModel)]="grade">
+                                                                <mat-option>--</mat-option>
+                                                                <mat-option *ngFor="let grade of grades" [value]="grade">
+                                                                    {{grade}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                        <mat-form-field #txtSection appearance="fill">
+                                                            <mat-label>Select Section</mat-label>
+                                                            <mat-select [(ngModel)]="section">
+                                                                <mat-option>--</mat-option>
+                                                                <mat-option *ngFor="let section of sections" [value]="section">
+                                                                    {{section}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                        <mat-form-field #txtYear appearance="fill">
+                                                            <mat-label>Select Year</mat-label>
+                                                            <mat-select [(ngModel)]="year">
+                                                                <mat-option>--</mat-option>
+                                                                <mat-option *ngFor="let year of years" [value]="year">
+                                                                    {{year}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-4 d-flex align-items-center justify-content-end">
+                                                        <mat-form-field #txtActive appearance="fill">
+                                                            <mat-label>Select Active Status</mat-label>
+                                                            <mat-select [(ngModel)]="status">
+                                                                <mat-option>--</mat-option>
+                                                                <mat-option [value]=true>True</mat-option>
+                                                                <mat-option [value]=false>False</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 d-flex justify-content-end">
+                                                        <button (click)="advancedSearch()" mat-raised-button color="primary">Apply</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="studentTable" mat-table [dataSource]="studentService.dataSource" matSort>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <!-- Registration Column -->
+                                            <ng-container matColumnDef="RegNo">
+                                                <th mat-header-cell *matHeaderCellDef>Reg No</th>
+                                                <td mat-cell *matCellDef="let element"> {{element.regNo}} </td>
+                                            </ng-container>
+
+                                            <!-- photo Column -->
+                                            <ng-container matColumnDef="Image">
+                                                <th mat-header-cell *matHeaderCellDef>Image</th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div class="studentImage img-fluid"
+                                                         [ngStyle]="(element.image!==null)?
+                                                         {background: 'url(http://localhost:8080/api/v1/students/image/'+element.regNo+')'}
+                                                         :(element.gender.toLowerCase()==='male')?{background: 'url(../../../../assets/img/avatar5.png)'}
+                                                         :{background: 'url(../../../../assets/img/avatar3.png)'}">
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <!-- Name Column -->
+                                            <ng-container matColumnDef="Name">
+                                                <th mat-header-cell *matHeaderCellDef>Name</th>
+                                                <td mat-cell *matCellDef="let element"> {{element.initial}} {{element.fname}} {{element.lname}} </td>
+                                            </ng-container>
+
+                                            <!-- Gender Column -->
+                                            <ng-container matColumnDef="Gender">
+                                                <th mat-header-cell *matHeaderCellDef>Gender</th>
+                                                <td mat-cell *matCellDef="let element"> {{element.gender.toLowerCase()}} </td>
+                                            </ng-container>
+
+                                            <!-- Class Column -->
+                                            <ng-container matColumnDef="Grade">
+                                                <th mat-header-cell *matHeaderCellDef>Grade</th>
+                                                <td mat-cell *matCellDef="let element"> {{element.grades[0].grade}} {{element.grades[0].section}} {{element.grades[0].year}}</td>
+                                            </ng-container>
+
+                                            <!-- Address Column -->
+                                            <ng-container matColumnDef="Address">
+                                                <th mat-header-cell *matHeaderCellDef>Address</th>
+                                                <td mat-cell *matCellDef="let element"> {{element.streetNo}} {{element.firstStreet}},{{element.secondStreet}},{{element.town}}</td>
+                                            </ng-container>
+
+                                            <!-- Contact Column -->
+                                            <ng-container matColumnDef="Contact">
+                                                <th mat-header-cell *matHeaderCellDef>Contact</th>
+                                                <td mat-cell *matCellDef="let element"> {{element.contact}} </td>
+                                            </ng-container>
+
+                                        </div>
+                                    </div>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr [ngClass]="{'selected': row.regNo==selectedRow}" mat-row *matRowDef="let row; columns: displayedColumns;" (click)="getSelectedStudent(row)"></tr>
+
+                                </table>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <mat-paginator [pageSize]="studentService.pageSize" [pageSizeOptions]="[8, 10, 15]" [length]="studentService.studentCount" (page)="changePage($event)" showFirstLastButtons></mat-paginator>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="fab-container">
+                                            <div (click)="floatingIconClick()" [ngClass]="studentService.buttonCount==1 ? 'fab fab-icon-holder' : 'fab-icon-holder'">
+                                                <i [ngClass]="studentService.buttonCount==0 ? 'fas fa-plus' : 'fas fa-times'"></i>
+                                            </div>
+                                            <ul class="fab-options">
+                                                <li *ngIf="selectedRow !== undefined">
+                                                    <span class="fab-lable">Edit Row</span>
+                                                    <div (click)="editRow()" class="fab-icon-holder">
+                                                        <i class="fa fa-edit"></i>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <span class="fab-lable">Add Row</span>
+                                                    <div (click)="addRow()" class="fab-icon-holder">
+                                                        <i class="fa fa-plus"></i>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

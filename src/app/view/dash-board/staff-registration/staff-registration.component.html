@@ -1,0 +1,192 @@
+<div [ngClass]="staffService.mode === 'separate' ? 'content-wrapper': ''" class="mainDiv">
+    <div *ngIf="staffService.mode !== 'separate'" class="row">
+        <div class="col-12 d-flex justify-content-end">
+            <button class="btn btn-dialog-close d-flex justify-content-center align-items-center" mat-stroked-button (click)="onFormClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <h4>Staff Member Registration</h4>
+                </div>
+            </div>
+            <mat-card class="box form-card">
+                <form [formGroup]="staffService.form" class="example-form" style="font-size: 12px;" (ngSubmit)="submitForm()">
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12 col-md-3">
+                                        <div class="d-flex justify-content-center align-items-center profilePhoto img-fluid">
+                                            <img [src]="staffService.profileImageUrl === '' ? '../../../../assets/images/user-picture.png' : staffService.profileImageUrl" class="profilePhoto img-fluid">
+                                            <div *ngIf="staffService.profileImageUrl !== ''" class="mask"
+                                                 mwlConfirmationPopover
+                                                 [popoverTitle]="popoverTitle"
+                                                 [popoverMessage]="popoverMessage"
+                                                 placement="right"
+                                                 (confirm)="deleteProfileImage()">
+                                                <div class="delete">
+                                                </div>
+                                            </div>
+                                            <div class="edit">
+                                                <form (ngSubmit)="$event.stopPropagation()">
+                                                    <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelect($event)">
+                                                    <button (click)="fileInput.click()"><span class=""><mat-icon matSuffix>mode_edit</mat-icon></span></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-9 d-flex align-items-end">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <!--Registration Number field start here-->
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <mat-form-field [style.width.%]=100>
+                                                            <mat-label>Member Id</mat-label>
+                                                            <div class="d-flex">
+                                                                <input #regNo (focusout)="(regNo.value !== '') ? validateUsername(regNo.value) : ''" (focus)="staffService.isValidUsername=true" matInput formControlName="id" required [style.width.%]="50">
+                                                                <span *ngIf="!staffService.isValidUsername" style="color: red">this register number already in use.</span>
+                                                            </div>
+                                                            <mat-error *ngIf="staffService.registerFormControl.id.invalid">
+                                                                {{staffService.registerFormControl.id.hasError('required')?'member id is required':''}}
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <!--Registration Number field end here-->
+                                                <!--Start Name fields here-->
+                                                <div class="row">
+                                                    <div class="col-12 col-md-3">
+                                                        <mat-form-field [style.width.%]=100>
+                                                            <mat-label>Initials</mat-label>
+                                                            <input matInput formControlName="initial">
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                    <div class="col-12 col-md-4">
+                                                        <mat-form-field [style.width.%]=100>
+                                                            <mat-label>First name</mat-label>
+                                                            <input matInput formControlName="fname" required>
+                                                            <mat-error *ngIf="staffService.registerFormControl.fname.invalid">
+                                                                {{staffService.registerFormControl.fname.hasError('required') ? 'First name is required'
+                                                                : staffService.registerFormControl.fname.hasError('minlength')
+                                                                    ? 'First name should have at least three characters': 'First name cannot contain any numbers or special characters'}}
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                    <div class="col-12 col-md-5">
+                                                        <mat-form-field [style.width.%]=100>
+                                                            <mat-label>Last Name </mat-label>
+                                                            <input matInput formControlName="lname">
+                                                            <mat-error *ngIf="staffService.registerFormControl.lname.invalid">
+                                                                {{staffService.registerFormControl.lname.hasError('minlength')? 'Last name should have at least three characters': ''}}
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                </div>
+                                                <!--End Name fields here-->
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <mat-form-field [style.width.%]=100>
+                                                            <mat-label>Salary Number</mat-label>
+                                                            <input matInput placeholder="ex.12345" formControlName="salaryNo" [style.width.%]="50">
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Address Fileds start here-->
+                        <div class="row">
+                            <div class="col-12 col-md-2">
+                                <mat-form-field [style.width.%]=100>
+                                    <mat-label>Street Number</mat-label>
+                                    <input matInput placeholder="ex.No 01" formControlName="streetNo">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <mat-form-field [style.width.%]=100>
+                                    <mat-label>First Street</mat-label>
+                                    <input matInput placeholder="ex.1St lane" formControlName="firstStreet"required>
+                                    <mat-error *ngIf="staffService.registerFormControl.firstStreet.invalid">
+                                        {{staffService.registerFormControl.firstStreet.hasError('required')
+                                        ? 'first street is required':staffService.registerFormControl.firstStreet.hasError('minlength')
+                                            ? 'first street should have at least threee characters':''}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-12 col-md-3">
+                                <mat-form-field [style.width.%]=100>
+                                    <mat-label>Second Street</mat-label>
+                                    <input matInput placeholder="Ex.Kodagoda" formControlName="secondStreet"required>
+                                    <mat-error *ngIf="staffService.registerFormControl.secondStreet.invalid">
+                                        {{staffService.registerFormControl.secondStreet.hasError('required')
+                                        ?'second street is required':staffService.registerFormControl.secondStreet.hasError('minlength')
+                                            ?'second street should have at least threee characters':''}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-12 col-md-3">
+                                <mat-form-field [style.width.%]=100>
+                                    <mat-label>Town</mat-label>
+                                    <input matInput placeholder="Ex.Imaduwa" formControlName="town">
+                                    <mat-error *ngIf="staffService.registerFormControl.town.invalid">
+                                        {{staffService.registerFormControl.town.hasError('minlength')?'town should have at least three characters':''}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!--Address Fileds end here-->
+
+                        <div class="row">
+                            <!--Radio button field start here-->
+                            <div class="col-12 col-md-4 d-flex align-items-center">
+                                <mat-radio-group aria-label="Select an option" formControlName="gender">
+                                    <mat-radio-button value="male" class="pr-lg-4 pr-4">Male</mat-radio-button>
+                                    <mat-radio-button value="female">Female</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <!--Radio button field end here-->
+                            <!--Telephone field start here-->
+                            <div class="col-12 col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Telephone</mat-label>
+                                    <input type="tel" matInput placeholder="0771234567" formControlName="contact">
+                                    <mat-icon matSuffix>mode_edit</mat-icon>
+                                    <mat-error *ngIf="staffService.registerFormControl.contact.invalid">
+                                        {{staffService.registerFormControl.contact.hasError('minlength')?'contact number must be at least 10 numbers'
+                                        : staffService.registerFormControl.contact.hasError('maxlength')?'contact number must be 10 numbers'
+                                            :staffService.registerFormControl.contact.hasError('pattern')?'contact number can not contain any special characters':''}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <!--Telephone field end here-->
+                            <!--Active states field start here-->
+                            <div class="col-12 col-md-4 d-flex justify-content-center align-items-center">
+                                <mat-slide-toggle formControlName="active" color="primary">Active</mat-slide-toggle>
+                            </div>
+                            <!--Active states field end here-->
+                        </div>
+                    </mat-card-content>
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <button mat-stroked-button class="btn-block btn-register button" [style.width.%]=50>Register</button>
+                        </div>
+                    </div>
+                </form>
+            </mat-card>
+        </div>
+    </div>
+</div>
+

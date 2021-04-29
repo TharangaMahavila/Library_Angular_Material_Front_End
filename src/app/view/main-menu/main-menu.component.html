@@ -1,0 +1,115 @@
+<div class="container-fluid">
+  <div class="row navbar-header">
+    <div class="col-12 content"style="padding:0;margin:0;">
+      <!--Navbar-->
+      <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark" [containerInside]="false">
+
+        <!-- Navbar brand -->
+        <mdb-navbar-brand class="d-flex"><div class="school-badge"></div><a class="navbar-brand ml-3 text-light">Batemulla National School</a></mdb-navbar-brand>
+        <!-- Collapsible content -->
+        <links>
+
+          <!-- Links -->
+          <ul class="navbar-nav ml-auto">
+            <!-- Dropdown -->
+            <li class="nav-item dropdown" dropdown>
+              <a dropdownToggle mdbWavesEffect type="button" class="nav-link waves-light" mdbWavesEffect>
+                <mdb-icon fas icon="info-circle"></mdb-icon> About us</a>
+            </li>
+
+          </ul>
+          <!-- Links -->
+        </links>
+        <!-- Collapsible content -->
+
+      </mdb-navbar>
+      <!--/.Navbar-->
+    </div>
+  </div>
+  <div class="row d-flex">
+    <div class="col-12 col-md-8">
+      <div class="row">
+        <div class="col-12">
+          <app-search-result></app-search-result>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 login-section">
+      <div class="row">
+        <div class="col-12 mt-5 mb-3 d-flex justify-content-center">
+          <!-- Material form login -->
+          <div class="login-box">
+            <!-- /.login-logo -->
+            <div class="card">
+              <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in to start your session</p>
+
+                <form #frm="ngForm" [formGroup]="form" (ngSubmit)="submitFormData(username.value,password.value)">
+                  <div class="input-group mb-3">
+                    <mat-form-field appearance="legacy" [style.width.%]="100">
+                      <mat-label>Username</mat-label>
+                      <input formControlName="username" #username matInput placeholder="username" required>
+                      <mat-icon matSuffix>account_circle</mat-icon>
+                      <mat-error *ngIf="formControl.username.invalid">
+                        {{formControl.username.hasError('required')?'username is required':'invalid username'}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="input-group mb-3">
+                    <mat-form-field appearance="legacy" [style.width.%]="100">
+                      <mat-label>Password</mat-label>
+                      <input type="password" formControlName="password" #password matInput placeholder="password" required>
+                      <mat-icon matSuffix>lock</mat-icon>
+                      <mat-error *ngIf="formControl.password.invalid">
+                        {{formControl.password.hasError('required')?'password is required':''}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <div class="col-8">
+                      <div class="icheck-primary">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">
+                          Remember Me
+                        </label>
+                      </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                      <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                </form>
+
+                <div class="social-auth-links text-center mb-3">
+                  <p>- OR -</p>
+                  <a class="btn btn-block btn-primary text-light">
+                    <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+                  </a>
+                  <a class="btn btn-block btn-danger text-light">
+                    <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+                  </a>
+                </div>
+                <!-- /.social-auth-links -->
+
+                <p class="mb-1 text-primary">
+                  <a>I forgot my password</a>
+                </p>
+                <p class="mb-0 text-primary">
+                  <a class="text-center">Register a new membership</a>
+                </p>
+              </div>
+              <!-- /.login-card-body -->
+            </div>
+          </div>
+          <!-- /.login-box -->
+          <!-- Material form login -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+ </div>
+
+

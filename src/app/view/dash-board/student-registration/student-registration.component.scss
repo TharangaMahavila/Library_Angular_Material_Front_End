@@ -1,0 +1,95 @@
+.form-card {
+  box-shadow: 2px 2px 5px 2px darkseagreen;
+}
+.btn-register{
+  background-color: darkblue;
+}
+.profilePhoto{
+  position: relative;
+  width: 150px;
+  height: 150px;
+  background-color: white;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-size: cover !important;
+
+  .edit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    color: black;
+    right: 30px;
+    bottom: 5px;
+    width: 30px;
+    height: 30px;
+
+    &:hover{
+      cursor: pointer;
+      box-shadow: 5px 5px 15px 0px red;
+      width: 32px;
+      height: 32px;
+      background-color: lightblue;
+    }
+  }
+  .mask{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    opacity: 0;
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .delete{
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      background-image: url("../../../../assets/images/delete.png");
+      background-size: contain;
+      cursor: pointer;
+    }
+
+    &:hover{
+      opacity: 0.5;
+    }
+  }
+}
+.button{
+  border-radius: 50px;
+  background-color: lawngreen;
+  font-size: 18px;
+  font-weight: 800;
+  box-shadow: 5px 5px 5px 2px darkseagreen;
+
+  &:hover{
+    box-shadow: 5px 5px 5px 2px gray;
+  }
+}
+.btn-dialog-close{
+  position: absolute;
+  top: -20px;
+  right: -15px;
+  width: 30px;
+  min-width: 0px;
+  height: 30px;
+  padding: 0px;
+  text-align: center;
+  background-color: darkseagreen;
+
+  &:hover{
+    background-color: red;
+    width: 42px;
+    height: 42px;
+  }
+}
+.btn-dialog-close mat-icon{
+  justify-content: center;;
+  text-align: center;
+}

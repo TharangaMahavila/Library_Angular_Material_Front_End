@@ -1,0 +1,20 @@
+.imageSection{
+  min-width: 100px;
+}
+.profileImage{
+  width: 70px;
+  min-width: 70px;
+  height: 70px;
+  min-height: 70px;
+  border-radius: 50%;
+  border: 1px solid black;
+  background: no-repeat;
+  background-size: cover !important;
+}
+.title{
+  font-size: 13px;
+  font-style: italic;
+}
+.name{
+  font-size: 15px;
+}
