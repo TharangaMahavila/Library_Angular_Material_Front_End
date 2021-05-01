@@ -5,6 +5,8 @@ import {StudentService} from "../../../service/student.service";
 import {StaffService} from "../../../service/staff.service";
 import {Student} from "../../../model/Student";
 import {Router} from "@angular/router";
+import {ChartType} from "chart.js";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-main',
@@ -20,20 +22,38 @@ export class HomeComponent implements OnInit {
   todayAddedBooks = 0;
   todayAddedStaffs = 0;
   recentStudents: Array<Student> = [];
+  today = new Date().toString().slice(0,15);
+  beforeMonth = this.getBeforeWeek().toString().slice(0,15);
+  barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  }
+  barChartLabels = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+  barChartData = [
+    {data: [20,65,55,75,93], label: 'Last Month'},
+    {data: [42,25,78,68,45], label: 'This Month'},
+  ];
+  barChartLegend = true;
+  barChartType:ChartType = 'bar';
 
   constructor(private bookService: BookService
               ,public configService: ConfigService
               ,private studentService: StudentService
               ,private staffService: StaffService
-              ,private router: Router) { }
+              ,private router: Router
+              ,private titleService: Title) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle("BNS-Dashboard");
+
     this.countAllBooksByStatus(true);
     this.countAllStudentsByStatus(true);
     this.getRecentStudents();
     this.countTodayAddedStudents();
     this.countTodayAddedBooks();
     this.countTodayAddedStaffs();
+
+    this.bookIssueChart();
   }
 
   countAllBooksByStatus(status: boolean): void{
@@ -45,6 +65,12 @@ export class HomeComponent implements OnInit {
         title: 'Failed to count all books'
       });
     });
+  }
+
+  getBeforeWeek(): Date{
+    var today = new Date();
+    today.setDate(today.getDate()-7);
+    return today;
   }
 
   countAllStudentsByStatus(status: boolean): void{
@@ -123,5 +149,9 @@ export class HomeComponent implements OnInit {
         title: 'Failed to count today added staff members'
       });
     });
+  }
+
+  bookIssueChart(): void{
+
   }
 }

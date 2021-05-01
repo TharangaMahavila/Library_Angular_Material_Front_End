@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -47,6 +47,15 @@ import { StaffRegistrationComponent } from './view/dash-board/staff-registration
 import { BookRegistrationComponent } from './view/dash-board/book-registration/book-registration.component';
 import { BookComponent } from './view/dash-board/book/book.component';
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
+import {ChartsModule} from "ng2-charts";
+import { AuthorRegistrationComponent } from './view/dash-board/book-registration/author-registration/author-registration.component';
+import { AddCartWithLogginComponent } from './view/search-result/add-cart-with-loggin/add-cart-with-loggin.component';
+import { RackRegistrationComponent } from './view/dash-board/book-registration/rack-registration/rack-registration.component';
+import { SupplierRegistrationComponent } from './view/dash-board/book-registration/supplier-registration/supplier-registration.component';
+import { SettingComponent } from './view/dash-board/setting/setting.component';
+import { StepperComponent } from './view/dash-board/stepper/stepper.component';
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatStepperModule} from "@angular/material/stepper";
 
 
 @NgModule({
@@ -65,6 +74,12 @@ import {HashLocationStrategy, LocationStrategy} from "@angular/common";
     StaffRegistrationComponent,
     BookRegistrationComponent,
     BookComponent,
+    AuthorRegistrationComponent,
+    AddCartWithLogginComponent,
+    RackRegistrationComponent,
+    SupplierRegistrationComponent,
+    SettingComponent,
+    StepperComponent,
   ],
   imports: [
     BrowserModule,
@@ -98,7 +113,10 @@ import {HashLocationStrategy, LocationStrategy} from "@angular/common";
       confirmButtonType: 'danger'
     }),
     MatSelectModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    ChartsModule,
+    MatTabsModule,
+    MatStepperModule,
   ],
   providers: [BookService,
     {

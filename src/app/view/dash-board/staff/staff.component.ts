@@ -7,6 +7,7 @@ import {Grade} from "../../../model/Grade";
 import {StaffService} from "../../../service/staff.service";
 import {StaffRegistrationComponent} from "../staff-registration/staff-registration.component";
 import {Staff} from "../../../model/Staff";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-staff',
@@ -29,9 +30,11 @@ export class StaffComponent implements OnInit {
 
   constructor(private dialog: MatDialog
       ,public staffService: StaffService
-      ,private config: ConfigService) { }
+      ,private config: ConfigService
+      ,private titleService: Title) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle("BNS-All Staff")
 
     this.getAllStaff(this.staffService.pageIndex,this.staffService.pageSize,true);
     this.countAllStaff(true);

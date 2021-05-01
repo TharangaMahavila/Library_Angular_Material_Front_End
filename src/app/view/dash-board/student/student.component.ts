@@ -9,6 +9,7 @@ import {StudentService} from "../../../service/student.service";
 import {ConfigService} from "../../../service/config.service";
 import {Grade} from "../../../model/Grade";
 import {GradeService} from "../../../service/grade.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-student',
@@ -38,9 +39,11 @@ export class StudentComponent implements OnInit {
   constructor(private dialog: MatDialog
               ,public studentService: StudentService
               ,private config: ConfigService
-              ,private gradeService: GradeService) { }
+              ,private gradeService: GradeService
+              ,private titleService: Title) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle("BNS-All Students");
 
     this.getAllStudent(this.studentService.pageIndex,this.studentService.pageSize,true);
     this.countAllStudents(true);

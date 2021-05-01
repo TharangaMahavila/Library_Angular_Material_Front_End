@@ -1,3 +1,109 @@
-<p>student-profile works!</p>
-<!--<h1>Welcome {{userService.currentLoggedUser.regNo}}</h1>-->
-<button (click)="logOut()">Log out</button>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 content"style="padding:0;margin:0;">
+            <!--Navbar-->
+            <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark" [containerInside]="false">
+
+                <!-- Navbar brand -->
+                <mdb-navbar-brand class="d-flex"><div class="school-badge"></div><a class="navbar-brand ml-3" href="#">Batemulla National School</a></mdb-navbar-brand>
+                <!-- Collapsible content -->
+                <links>
+
+                    <!-- Links -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Dropdown -->
+                        <li class="nav-item dropdown" dropdown>
+                            <a dropdownToggle mdbWavesEffect type="button" class="nav-link waves-light" mdbWavesEffect>
+                                <mdb-icon fas icon="fas fa-shopping-cart"></mdb-icon> Cart
+                                <span class="badge badge-danger navbar-badge">{{cartItems.length}}</span>
+                            </a>
+                            <div (click)="$event.stopPropagation()" *dropdownMenu class="cart dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+                                <div class="dropdown-menu-lg dropdown-menu-right">
+
+                                    <mat-accordion *ngFor="let cartItem of cartItems">
+                                        <mat-expansion-panel class="pt-1 pb-1">
+                                            <mat-expansion-panel-header class="pl-2">
+                                                <mat-panel-title class="mr-2">
+                                                    <img src="assets/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle">
+                                                </mat-panel-title>
+                                                <mat-panel-description class="justify-content-start">
+                                                    <div>
+                                                        <p class="book-name">
+                                                            <span style="overflow: hidden">{{cartItem.name}}</span>
+                                                            <span>({{cartItem.year}})</span>
+                                                        </p>
+                                                        <p class="author-name text-muted text-left">{{cartItem.author}}</p>
+                                                    </div>
+                                                </mat-panel-description>
+                                            </mat-expansion-panel-header>
+
+                                            <div class="d-flex justify-content-end">
+                                                <button mat-raised-button color="accent">Remove</button>
+                                                <button class="ml-1" mat-raised-button color="primary">Request</button>
+                                            </div>
+
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Dropdown -->
+                        <li class="nav-item dropdown" dropdown>
+                            <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+                                <mdb-icon fas icon="user"></mdb-icon> Profile<span class="caret"></span></a>
+                            <div *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                                <a class="dropdown-item waves-light" mdbWavesEffect>Edit Profile</a>
+                                <a (click)="logOut()" class="dropdown-item waves-light" mdbWavesEffect>Log out</a>
+                            </div>
+                        </li>
+
+                    </ul>
+                    <!-- Links -->
+                </links>
+                <!-- Collapsible content -->
+
+            </mdb-navbar>
+            <!--/.Navbar-->
+        </div>
+    </div>
+    <div class="row photo-section "style="background-color: #016fb9">
+        <div class="col-12 cover-photo"style="background-color: #d23f31"></div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-4 student-detail">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center profile-image-section">
+                    <div class="profilePhoto img-fluid">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center student-bio">
+                    <mat-list>
+                        <mat-list-item class="d-flex justify-content-center profile-name">{{(currentStaffUser === undefined)?(currentStudentUser.fname+' '+currentStudentUser.lname)
+                            :(currentStaffUser.fname+' '+currentStaffUser.lname)}}</mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>{{(currentStaffUser === undefined)? currentStudentUser.regNo: currentStaffUser.id}}</mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item *ngIf="currentStudentUser !== undefined">{{currentStudentUser.grades[0].grade}} {{currentStudentUser.grades[0].section}} {{currentStudentUser.grades[0].year}}</mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>{{(currentStaffUser === undefined)? currentStudentUser.gender: currentStaffUser.gender}}</mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>{{(currentStaffUser === undefined)
+                            ? (currentStudentUser.streetNo+', '+currentStudentUser.firstStreet+', '+currentStudentUser.secondStreet+', '+currentStudentUser.town)
+                            : (currentStaffUser.streetNo+', '+currentStaffUser.firstStreet+', '+currentStaffUser.secondStreet+', '+currentStaffUser.town)}}</mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item *ngIf="currentStudentUser !== undefined">{{currentStudentUser.guardianName}}</mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item>{{(currentStaffUser === undefined)? currentStudentUser.contact: currentStaffUser.contact}}</mat-list-item>
+                    </mat-list>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <app-search-result></app-search-result>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

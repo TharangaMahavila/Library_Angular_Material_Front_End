@@ -1,0 +1,81 @@
+<div class="row mainDiv">
+    <div class="col-12">
+        <mat-horizontal-stepper #stepper>
+            <mat-step >
+                <div class="row">
+                    <div class="col-12  col-md-3 d-flex justify-content-center  align-items-center profile-image-section"style="max-height:180px;min-height:180px">
+                        <div class="profile-image"></div>
+                    </div>
+                    <div class="col-12 col-md-9"style="max-height:180px;min-height:180px">
+                        <div class="row">
+                            <div class="col-12">
+                                <mat-list>
+                                    <mat-list-item>regNo: S001</mat-list-item>
+                                    <mat-divider></mat-divider>
+                                    <mat-list-item>name: Ganga Jayakodi</mat-list-item>
+                                    <mat-divider></mat-divider>
+                                    <mat-list-item>Grade</mat-list-item>
+                                    <mat-divider></mat-divider>
+                                    <mat-list-item>Gender</mat-list-item>
+                                    <mat-divider></mat-divider>
+                                </mat-list>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div>
+                            <button  class="mt-2" mat-raised-button matStepperNext color="primary"[style.width.%]=15>Next</button>
+                        </div>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step >
+                <div class="row">
+                    <div class="col-12 col-md-3"style="max-height:200px;min-height:180px">
+                        <div class="cardImage img-fluid"></div>
+                    </div>
+                    <div class="col-12 col-md-9"style="max-height:200px;min-height:180px">
+                        <div class="row">
+                            <div class="col-12 d-flex mt-3">
+                                <p class="text-bold">aaaaaaaaaaaaaaaaaa</p><p class="ml-2 mr-2">|bbbbbbbbbbb</p>
+                                <p class="text-bold"></p><p class="ml-2">(</p>
+                                <p class="text-bold"></p>2010<p>)</p>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>Martin Wikramasinghe</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div>
+                            <button class="mr-2"mat-raised-button matStepperPrevious color="warn"[style.width.%]=15>Back</button>
+                            <button class="mt-2" mat-raised-button matStepperNext color="primary"[style.width.%]=15>Next</button>
+                        </div>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Done</ng-template>
+                <div class="row">
+                    <div class="col-12"style="max-height:200px;min-height:100px">
+                        <p>You are now done.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div>
+                            <button class="mr-2" mat-raised-button matStepperPrevious color="warn"[style.width.%]=15>Back</button>
+                            <button (click)="issueBook()"class="mt-2" mat-raised-button matStepperNext color="primary"[style.width.%]=15>Proceed</button>
+                        </div>
+                    </div>
+                </div>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </div>
+</div>

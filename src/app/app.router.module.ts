@@ -15,6 +15,7 @@ import {StaffComponent} from "./view/dash-board/staff/staff.component";
 import {StaffRegistrationComponent} from "./view/dash-board/staff-registration/staff-registration.component";
 import {BookComponent} from "./view/dash-board/book/book.component";
 import {BookRegistrationComponent} from "./view/dash-board/book-registration/book-registration.component";
+import {SettingComponent} from "./view/dash-board/setting/setting.component";
 
 const routes: Routes = [
   {
@@ -49,6 +50,7 @@ const routes: Routes = [
       {path: 'book-registration', component: BookRegistrationComponent},
       {path: 'student-registration', component: StudentRegistrationComponent},
       {path: 'staff-registration', component: StaffRegistrationComponent},
+      {path: 'setting', component: SettingComponent},
       {path: '**', pathMatch:'full', redirectTo: 'home'},
     ]
   },

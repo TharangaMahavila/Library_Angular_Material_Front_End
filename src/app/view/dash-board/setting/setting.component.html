@@ -1,0 +1,69 @@
+<div class="content-wrapper row container-fluid "style="background-color: #babecc">
+    <div class="col-12">
+        <mat-card>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <h4>Settings</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-3"style="background-color: #016fb9;height: 200px">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center profile-image-section">
+                            <div class="profilePhoto img-fluid">
+                                <div class="mask">
+                                    <div class="delete" (click)="deleteProfileImage()">
+                                    </div>
+                                </div>
+                                <div class="edit" (click)="editProfilePhoto()">
+                                    <span class=""><mat-icon matSuffix>mode_edit</mat-icon></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-9"style="background-color: yellow;height: 200px">
+                    <div class="row">
+                        <div class="col-12">
+                            <mat-accordion class="example-headers-align" multi>
+                                <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title class="d-flex justify-content-center align-items-center">
+                                            Change your password
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+
+                                    <mat-form-field appearance="legacy" [style.width.%]="100">
+                                        <mat-label>Old Password</mat-label>
+                                        <input type="password" matInput placeholder="password" required>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="legacy" [style.width.%]="100">
+                                        <mat-label>New Password</mat-label>
+                                        <input type="password" formControlName="password" #password matInput placeholder="password" required>
+                                        <mat-icon matSuffix>lock</mat-icon>
+                                        <mat-error *ngIf="formControl.password.invalid">
+                                            {{formControl.password.hasError('required')?'password is required':formControl.password.hasError('pattern')?'Passwords must contain at least six characters, including uppercase, lowercase letters,numbers and symbols.':''}}
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="legacy" [style.width.%]="100">
+                                        <mat-label>confirm Password</mat-label>
+                                        <input type="password" formControlName="password" #password matInput placeholder="password" required>
+                                        <mat-icon matSuffix>lock</mat-icon>
+                                        <mat-error *ngIf="formControl.password.invalid">
+                                            {{formControl.password.hasError('required')?'password is required':formControl.password.hasError('pattern')?'Passwords must contain at least six characters, including uppercase, lowercase letters,numbers and symbols.':''}}
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <button mat-stroked-button class="btn-block btn-register button">Save</button>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+</div>

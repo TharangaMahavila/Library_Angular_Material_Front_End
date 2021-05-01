@@ -9,6 +9,16 @@ import {StudentService} from "../../../service/student.service";
 import {ConfigService} from "../../../service/config.service";
 import {Grade} from "../../../model/Grade";
 import {GradeService} from "../../../service/grade.service";
+import {Title} from "@angular/platform-browser";
+import {BookService} from "../../../service/book.service";
+import {BookCustom} from "../../../model/BookCustom";
+import {Author} from "../../../model/Author";
+import {Supplier} from "../../../model/Supplier";
+import {Rack} from "../../../model/Rack";
+import {AuthorService} from "../../../service/author.service";
+import {SupplierService} from "../../../service/supplier.service";
+import {RackService} from "../../../service/rack.service";
+import {BookRegistrationComponent} from "../book-registration/book-registration.component";
 
 @Component({
   selector: 'app-book',
@@ -18,159 +28,160 @@ import {GradeService} from "../../../service/grade.service";
 export class BookComponent implements OnInit {
 
 
-  displayedColumns: string[] = ['RegNo', 'Image', 'Name', 'Gender', 'Grade', 'Address', 'Contact'];
+  displayedColumns: string[] = ['RefNo', 'Image', 'Name', 'Year', 'Medium', 'Author', 'Pages'];
 
   selectedRow!: string;
   panelOpenState = false;
-  grades: Array<number> = [];
-  sections: Array<string> = [];
-  years: Array<number> = [];
+  authors: Array<Author> = [];
 
   @ViewChild('txtSearchRegNo')
-  txtSearchRegNo!: ElementRef;
+  txtSearchRefNo!: ElementRef;
   @ViewChild('txtSearchName')
   txtSearchName!: ElementRef;
 
-  grade!: number;
-  section!: string;
-  year!: number;
-  status!: boolean;
+  author!: Author;
 
   constructor(private dialog: MatDialog
-      ,public studentService: StudentService
+      ,public bookService: BookService
+      ,public authorService: AuthorService
+      ,public supplierService: SupplierService
+      ,public rackService: RackService
       ,private config: ConfigService
-      ,private gradeService: GradeService) { }
+      ,private gradeService: GradeService
+      ,private titleService: Title) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle("BNS-All Books")
 
-    this.getAllStudent(this.studentService.pageIndex,this.studentService.pageSize,true);
-    this.countAllStudents(true);
+    this.getAllBooks(this.bookService.pageIndex,this.bookService.pageSize,this.bookService.activeBookTab);
+    this.countAllBooks(true);
   }
 
-  getAllStudent(pageIndex: number, pageSize:number, status:boolean): void{
-    this.studentService.getAllStudents(pageIndex,pageSize,status).subscribe(value => {
-      this.studentService.students = value;
-      this.studentService.dataSource.data = value
+  getAllBooks(pageIndex: number, pageSize:number, status:boolean): void{
+    this.bookService.getAllBooks(pageIndex,pageSize,status).subscribe(value => {
+      this.bookService.books = value;
+      this.bookService.dataSource.data = value
     }, error => {
       this.config.toastMixin.fire({
         icon: 'error',
-        title: 'Cannot load the students'
+        title: 'Cannot load the Books'
       });
     });
   }
 
-  countAllStudents(status: boolean): void{
-    this.studentService.countAllStudents(status).subscribe(value => {
-      this.studentService.studentCount = value;
+  countAllBooks(status: boolean): void{
+    this.bookService.countAllBooks(status).subscribe(value => {
+      this.bookService.bookCount = value;
     },error => {
       this.config.toastMixin.fire({
         icon: 'error',
-        title: 'Cannot load the students'
+        title: 'Cannot load the Books'
       });
     });
   }
 
-  applyFilterByRegisterNumber(event: Event) {
+  applyFilterByReferenceNumber(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.studentService.students.length = 0;
-    this.studentService.searchStudentByNumber(filterValue,this.studentService.pageIndex,this.studentService.pageSize).subscribe(value => {
-      this.studentService.students = value;
-      this.studentService.dataSource.data = value;
+    this.bookService.books.length = 0;
+    this.bookService.searchBookByRefNo(filterValue,this.bookService.pageSize,this.bookService.pageIndex).subscribe(value => {
+      this.bookService.books = value;
+      this.bookService.dataSource.data = value;
     },error => {
       this.config.toastMixin.fire({
         icon: 'error',
-        title: 'Cannot search the students'
+        title: 'Cannot search the books'
       });
     });
-    this.studentService.countStudentByNumber(filterValue).subscribe(value => {
-      this.studentService.studentCount = value;
+    this.bookService.countBookByRefNumber(filterValue).subscribe(value => {
+      this.bookService.bookCount = value;
     },error => {
       this.config.toastMixin.fire({
         icon: 'error',
-        title: 'Cannot search the students'
+        title: 'Cannot search the books'
       });
     });
   }
 
-  applyFilterByStudentName(event: Event) {
+  applyFilterByBookName(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.studentService.students.length = 0;
-    this.studentService.searchStudentByName(filterValue,this.studentService.pageIndex,this.studentService.pageSize).subscribe(value => {
-      this.studentService.students = value;
-      this.studentService.dataSource.data = value;
+    this.bookService.books.length = 0;
+    this.bookService.searchBookByName(filterValue,this.bookService.pageIndex.toString(),this.bookService.pageSize.toString()).subscribe(value => {
+      this.bookService.books = value;
+      this.bookService.dataSource.data = value;
     },error => {
       this.config.toastMixin.fire({
         icon: 'error',
-        title: 'Cannot search the students'
+        title: 'Cannot search the books'
       });
     });
-    this.studentService.countStudentByName(filterValue).subscribe(value => {
-      this.studentService.studentCount = value;
+    this.bookService.searchBookCountByName(filterValue).subscribe(value => {
+      this.bookService.bookCount = value;
     },error => {
       this.config.toastMixin.fire({
         icon: 'error',
-        title: 'Cannot search the students'
+        title: 'Cannot search the books'
       });
     });
   }
 
   clearSearch(value: string) {
     if (value === null || value === ''){
-      this.getAllStudent(this.studentService.pageIndex,this.studentService.pageSize,true);
-      this.countAllStudents(true);
+      this.getAllBooks(this.bookService.pageIndex,this.bookService.pageSize,true);
+      this.countAllBooks(true);
     }
   }
 
   openRegisterForm(){
-    this.studentService.selectedItems.length = 0;
-    this.studentService.mode = 'add';
-    this.studentService.initializeFormGroup();
-    this.studentService.profileImageUrl = '';
+    this.authorService.selectedItems.length = 0;
+    this.supplierService.selectedItems.length = 0;
+    this.rackService.selectedItemsRack.length = 0;
+
+    this.bookService.mode = 'add';
+    this.bookService.initializeFormGroup();
+    this.bookService.profileImageUrl = '';
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    this.dialog.open(StudentRegistrationComponent,dialogConfig);
+    this.dialog.open(BookRegistrationComponent,dialogConfig);
   }
 
   changePage(event: PageEvent) {
-    this.studentService.pageIndex = event.pageIndex;
-    this.studentService.pageSize = event.pageSize;
-    this.getAllStudent(this.studentService.pageIndex,this.studentService.pageSize,true);
-    this.studentService.dataSource = new MatTableDataSource<Student>(this.studentService.students);
+    this.bookService.pageIndex = event.pageIndex;
+    this.bookService.pageSize = event.pageSize;
+    this.getAllBooks(this.bookService.pageIndex,this.bookService.pageSize,this.bookService.activeBookTab);
+    this.bookService.dataSource = new MatTableDataSource<BookCustom>(this.bookService.books);
   }
 
-  getSelectedStudent(student: Student): void{
-    this.studentService.selectedStudent = student;
-    this.selectedRow = student.regNo;
+  getSelectedBook(book: BookCustom): void{
+    this.bookService.selectedBook = book;
+    this.selectedRow = book.refNo;
   }
 
   floatingIconClick() {
-    this.studentService.isFloatingButtonClicked = true
-    if(this.studentService.buttonCount == 0){
-      this.studentService.buttonCount = 1;
+    this.bookService.isFloatingButtonClicked = true;
+    if(this.bookService.buttonCount == 0){
+      this.bookService.buttonCount = 1;
     }else {
-      this.studentService.buttonCount = 0;
+      this.bookService.buttonCount = 0;
     }
   }
 
   editRow() {
-    let grades: Array<newGrade> = [];
-    for (const grade of this.studentService.selectedStudent.grades) {
-      var obj = {id: grade.id, desc: grade.grade+' '+grade.section+' '+grade.year}
-      grades.push(obj);
-    }
-    this.studentService.selectedItems = grades;
-    this.studentService.populateForm(this.studentService.selectedStudent);
-    if(this.studentService.selectedStudent.image !== null){
-      this.studentService.profileImageUrl = `http://localhost:8080/api/v1/students/image/${this.studentService.selectedStudent.regNo}`
+    this.authorService.selectedItems.push(this.bookService.selectedBook.author);
+    this.supplierService.selectedItems.push(this.bookService.selectedBook.supplier);
+    this.rackService.selectedItemsRack.push(this.bookService.selectedBook.rackNo);
+
+    this.bookService.populateForm(this.bookService.selectedBook);
+    if(this.bookService.selectedBook.image !== null){
+      this.bookService.profileImageUrl = `http://localhost:8080/api/v1/books/image/${this.bookService.selectedBook.bookId}`
     }else {
-      this.studentService.profileImageUrl = '';
+      this.bookService.profileImageUrl = '';
     }
-    this.studentService.mode = 'update';
+    this.bookService.mode = 'update';
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    this.dialog.open(StudentRegistrationComponent,dialogConfig);
+    this.dialog.open(BookRegistrationComponent,dialogConfig);
   }
 
   addRow() {
@@ -179,22 +190,10 @@ export class BookComponent implements OnInit {
 
   advanceSearchPanelOpen() {
     this.panelOpenState = true;
-    this.gradeService.getAllGrades().subscribe(value => {
-
-      this.grades.length = 0;
-      this.sections.length = 0;
-      this.years.length = 0;
-
-      for (const grade of value) {
-        this.grades.push(grade.grade);
-        this.sections.push(grade.section);
-        this.years.push(grade.year);
-      }
-    });
   }
 
   advancedSearch() {
-    alert(this.status)
+    alert(this.bookService.activeBookTab);
   }
 
 }

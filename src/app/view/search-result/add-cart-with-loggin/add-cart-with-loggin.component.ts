@@ -1,19 +1,17 @@
-import {AfterViewInit, Component, ViewChild, OnInit, ElementRef} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
-import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
-import {UserService} from "../../service/user.service";
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {BookService} from "../../../service/book.service";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../../../service/user.service";
 import {Router} from "@angular/router";
-import {ConfigService} from "../../service/config.service";
-import {LoaderService} from "../../service/loader.service";
-import {Title} from "@angular/platform-browser";
+import {ConfigService} from "../../../service/config.service";
+import {LoaderService} from "../../../service/loader.service";
 
 @Component({
-  selector: 'app-main-menu',
-  templateUrl: './main-menu.component.html',
-  styleUrls: ['./main-menu.component.scss']
+  selector: 'app-add-cart-with-loggin',
+  templateUrl: './add-cart-with-loggin.component.html',
+  styleUrls: ['./add-cart-with-loggin.component.scss']
 })
-export class MainMenuComponent implements OnInit{
+export class AddCartWithLogginComponent implements OnInit {
 
   @ViewChild('frm')
   frm!: FormGroup;
@@ -22,16 +20,14 @@ export class MainMenuComponent implements OnInit{
   @ViewChild('password')
   txtPassword!: ElementRef;
 
-    constructor(private fb: FormBuilder
-                ,private userService: UserService
-                ,private router: Router
-                ,private config: ConfigService
-                ,public loaderService: LoaderService
-                ,private titleService: Title) {
-    }
+  constructor(public bookService: BookService,
+              private fb: FormBuilder
+      ,private userService: UserService
+      ,private router: Router
+      ,private config: ConfigService
+      ,public loaderService: LoaderService) { }
 
   ngOnInit(): void {
-      this.titleService.setTitle("BNS-Home page")
   }
 
   form = new FormGroup({
@@ -79,4 +75,5 @@ export class MainMenuComponent implements OnInit{
       });
     }
   }
+
 }

@@ -3,6 +3,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {ConfigService} from "../../../service/config.service";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {StaffService} from "../../../service/staff.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-staff-registration',
@@ -21,10 +22,12 @@ export class StaffRegistrationComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<StaffRegistrationComponent>,
               public staffService: StaffService
       ,private config: ConfigService
-      ,private _bottomSheet: MatBottomSheet) { }
+      ,private _bottomSheet: MatBottomSheet
+      ,private titleService: Title) { }
 
 
   ngOnInit(): void {
+    this.titleService.setTitle("BNS-Staff Registration");
   }
 
   deleteProfileImage(): void {

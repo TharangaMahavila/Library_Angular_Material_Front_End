@@ -1,0 +1,123 @@
+mdb-navbar-brand a{
+  font-weight: bold;
+  font-size: 28px;
+}
+.school-badge{
+  background-image: url("../../../assets/images/ins badge.jpg");
+  background-size: contain;
+  display: inline-block;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+}
+.cover-photo {
+  background: url("https://images.template.net/wp-content/uploads/2014/11/Natural-Facebook-Cover-Photo.jpg");
+  height: 100px;
+  max-height: 100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+
+.student-detail {
+  height: 100vh;
+  position: sticky;
+  top: 0;
+}
+.student-bio{
+  height: max-content;
+  margin-top: 30px;
+}
+
+
+.profile-image-section {
+  height: 170px;
+  max-height: 170px;
+  top: 0;
+  left: 0;
+}
+
+.profile-name {
+  font-weight: 800;
+  font-size: 24px;
+}
+
+.cart {
+  max-height: 250px;
+  min-height: 250px;
+  overflow: auto;
+}
+
+.cartItem:hover {
+  background-color: #babecc;
+}
+.example-action-buttons {
+  padding-bottom: 20px;
+}
+
+.book-name {
+  font-size: 14px;
+  overflow: hidden;
+  font-weight: bold;
+}
+
+.author-name {
+  font-size: 10px;
+}
+
+.profilePhoto{
+  position: relative;
+  width: 150px;
+  height: 150px;
+  background-color: white;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-image: url("../../../assets/images/user-picture.png");
+  background-size: cover;
+
+  .edit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    color: black;
+    right: 30px;
+    bottom: 5px;
+    width: 30px;
+    height: 30px;
+
+    &:hover{
+      cursor: pointer;
+      box-shadow: 5px 5px 15px 0px red;
+      width: 32px;
+      height: 32px;
+      background-color: lightblue;
+    }
+  }
+  .mask{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    opacity: 0;
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .delete{
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      background-image: url("../../../assets/images/delete.png");
+      background-size: contain;
+      cursor: pointer;
+    }
+
+    &:hover{
+      opacity: 0.5;
+    }
+  }
+}

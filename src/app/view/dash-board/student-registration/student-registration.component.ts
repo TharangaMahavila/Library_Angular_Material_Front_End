@@ -7,6 +7,7 @@ import {GradeService} from "../../../service/grade.service";
 import {Grade} from "../../../model/Grade";
 import {Student} from "../../../model/Student";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-registration',
@@ -27,10 +28,12 @@ export class StudentRegistrationComponent implements OnInit {
               public studentService: StudentService
               ,private config: ConfigService
               ,private gradeService: GradeService
-              ,private _bottomSheet: MatBottomSheet) { }
+              ,private _bottomSheet: MatBottomSheet
+              ,private titleService: Title) { }
 
 
   ngOnInit(): void {
+    this.titleService.setTitle("BNS-Student Registration");
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -95,7 +98,9 @@ export class StudentRegistrationComponent implements OnInit {
       //add student
       if(this.studentService.mode === 'add' || this.studentService.mode === 'separate'){
         this.studentService.saveStudent(studentObj).subscribe(value => {
-          this.uploadProfileImage(this.selectedImage, studentObj.regNo);
+          if(this.studentService.profileImageUrl !== ''){
+            this.uploadProfileImage(this.selectedImage, studentObj.regNo);
+          }
           this.closeForm();
           this.config.toastMixin.fire({
             icon: 'success',

@@ -91,6 +91,7 @@ export class StudentService {
     this.form.controls['regNo'].disable();
     this.form.controls['active'].enable();
   }
+
   get registerFormControl(){
     return this.form.controls;
   }
