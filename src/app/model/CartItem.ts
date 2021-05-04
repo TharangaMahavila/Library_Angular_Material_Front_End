@@ -1,7 +1,8 @@
+import {BookCustom} from "./BookCustom";
+
 export interface CartItem{
-    id:string
-    name: string,
-    year: number,
-    author: string
-    image: string
+    userId:string
+    bookCustomEntity: BookCustom,
+    requestedAt: Date,
+    requestStatus: boolean
 }

@@ -29,22 +29,29 @@
                                                 <mat-panel-description class="justify-content-start">
                                                     <div>
                                                         <p class="book-name">
-                                                            <span style="overflow: hidden">{{cartItem.name}}</span>
-                                                            <span>({{cartItem.year}})</span>
+                                                            <span style="overflow: hidden">{{cartItem.bookCustomEntity.englishName}}</span>
+                                                            <span>({{cartItem.bookCustomEntity.year}})</span>
                                                         </p>
-                                                        <p class="author-name text-muted text-left">{{cartItem.author}}</p>
+                                                        <p class="author-name text-muted text-left">{{cartItem.bookCustomEntity.author.name}}</p>
                                                     </div>
                                                 </mat-panel-description>
                                             </mat-expansion-panel-header>
 
                                             <div class="d-flex justify-content-end">
-                                                <button mat-raised-button color="accent">Remove</button>
+                                                <button (click)="removeCartItem((userService.currentStudentUser !== undefined)
+                                                ?userService.currentStudentUser.regNo:userService.currentStaffUser.id,cartItem.bookCustomEntity)" mat-raised-button color="accent">Remove</button>
                                                 <button class="ml-1" mat-raised-button color="primary">Request</button>
                                             </div>
 
                                         </mat-expansion-panel>
                                     </mat-accordion>
 
+                                </div>
+                                <div *ngIf="cartItems.length<1" class="cart d-flex justify-content-center align-items-center">
+                                    <div class="text-center text-muted">
+                                        <p>Your cart is empty!</p>
+                                        <p>Add books and send request to proceed</p>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -67,8 +74,8 @@
             <!--/.Navbar-->
         </div>
     </div>
-    <div class="row photo-section "style="background-color: #016fb9">
-        <div class="col-12 cover-photo"style="background-color: #d23f31"></div>
+    <div class="row photo-section">
+        <div class="col-12 cover-photo"></div>
     </div>
     <div class="row">
         <div class="col-12 col-md-4 student-detail">
@@ -81,22 +88,22 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-center student-bio">
                     <mat-list>
-                        <mat-list-item class="d-flex justify-content-center profile-name">{{(currentStaffUser === undefined)?(currentStudentUser.fname+' '+currentStudentUser.lname)
-                            :(currentStaffUser.fname+' '+currentStaffUser.lname)}}</mat-list-item>
+                        <mat-list-item class="d-flex justify-content-center profile-name">{{(userService.currentStaffUser === undefined)?(userService.currentStudentUser.fname+' '+userService.currentStudentUser.lname)
+                            :(userService.currentStaffUser.fname+' '+userService.currentStaffUser.lname)}}</mat-list-item>
                         <mat-divider></mat-divider>
-                        <mat-list-item>{{(currentStaffUser === undefined)? currentStudentUser.regNo: currentStaffUser.id}}</mat-list-item>
+                        <mat-list-item>{{(userService.currentStaffUser === undefined)? userService.currentStudentUser.regNo: userService.currentStaffUser.id}}</mat-list-item>
                         <mat-divider></mat-divider>
-                        <mat-list-item *ngIf="currentStudentUser !== undefined">{{currentStudentUser.grades[0].grade}} {{currentStudentUser.grades[0].section}} {{currentStudentUser.grades[0].year}}</mat-list-item>
+                        <mat-list-item *ngIf="userService.currentStudentUser !== undefined">{{userService.currentStudentUser.grades[0].grade}} {{userService.currentStudentUser.grades[0].section}} {{userService.currentStudentUser.grades[0].year}}</mat-list-item>
                         <mat-divider></mat-divider>
-                        <mat-list-item>{{(currentStaffUser === undefined)? currentStudentUser.gender: currentStaffUser.gender}}</mat-list-item>
+                        <mat-list-item>{{(userService.currentStaffUser === undefined)? userService.currentStudentUser.gender: userService.currentStaffUser.gender}}</mat-list-item>
                         <mat-divider></mat-divider>
-                        <mat-list-item>{{(currentStaffUser === undefined)
-                            ? (currentStudentUser.streetNo+', '+currentStudentUser.firstStreet+', '+currentStudentUser.secondStreet+', '+currentStudentUser.town)
-                            : (currentStaffUser.streetNo+', '+currentStaffUser.firstStreet+', '+currentStaffUser.secondStreet+', '+currentStaffUser.town)}}</mat-list-item>
+                        <mat-list-item>{{(userService.currentStaffUser === undefined)
+                            ? (userService.currentStudentUser.streetNo+', '+userService.currentStudentUser.firstStreet+', '+userService.currentStudentUser.secondStreet+', '+userService.currentStudentUser.town)
+                            : (userService.currentStaffUser.streetNo+', '+userService.currentStaffUser.firstStreet+', '+userService.currentStaffUser.secondStreet+', '+userService.currentStaffUser.town)}}</mat-list-item>
                         <mat-divider></mat-divider>
-                        <mat-list-item *ngIf="currentStudentUser !== undefined">{{currentStudentUser.guardianName}}</mat-list-item>
+                        <mat-list-item *ngIf="userService.currentStudentUser !== undefined">{{userService.currentStudentUser.guardianName}}</mat-list-item>
                         <mat-divider></mat-divider>
-                        <mat-list-item>{{(currentStaffUser === undefined)? currentStudentUser.contact: currentStaffUser.contact}}</mat-list-item>
+                        <mat-list-item>{{(userService.currentStaffUser === undefined)? userService.currentStudentUser.contact: userService.currentStaffUser.contact}}</mat-list-item>
                     </mat-list>
                 </div>
             </div>

@@ -6,6 +6,10 @@ import {Student} from "../../model/Student";
 import {Router} from "@angular/router";
 import {Staff} from "../../model/Staff";
 import Swal from "sweetalert2";
+import {CartService} from "../../service/cart.service";
+import {ConfigService} from "../../service/config.service";
+import {BookCustom} from "../../model/BookCustom";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-student-profile',
@@ -14,27 +18,30 @@ import Swal from "sweetalert2";
 })
 export class StudentProfileComponent implements OnInit {
 
-  currentStudentUser!: Student;
-  currentStaffUser!: Staff;
-
   cartItems: Array<CartItem> = [];
 
   @ViewChild(MatAccordion)
   accordion!: MatAccordion;
 
   constructor(public userService: UserService
-      ,private router: Router) { }
+              ,private router: Router
+              ,private cartService: CartService
+              ,private configService: ConfigService
+              ,private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.loadAllCartItems('S001');
     this.getCurrentUser();
   }
 
-  loadAllCartItems(userId: string){
-    for (let i = 0; i<5; i++ ){
-      this.cartItems.push({id: '1',name:'Gamperaliya'
-        ,year:1995,author:'Martin Wickramasinghe',image:'testImage'});
-    }
+  getAllCartItems(userId: string){
+    this.cartService.getAllCartItems(userId).subscribe(value => {
+      this.cartItems = value;
+    },error => {
+      this.configService.toastMixin.fire({
+        icon: "error",
+        title: "Failed to load the cart items"
+      });
+    });
   }
 
   deleteProfileImage(): void {
@@ -67,7 +74,8 @@ export class StudentProfileComponent implements OnInit {
     var role = localStorage.getItem('role');
     if(role === 'student'){
       this.userService.getStudentUser().subscribe(value => {
-        this.currentStudentUser = value;
+        this.userService.currentStudentUser = value;
+        this.getAllCartItems(this.userService.currentStudentUser.regNo);
       },error => {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
@@ -75,12 +83,42 @@ export class StudentProfileComponent implements OnInit {
       });
     }else if(role === 'staff'){
       this.userService.getStaffUser().subscribe(value => {
-        this.currentStaffUser = value;
+        this.userService.currentStaffUser = value;
+        this.getAllCartItems(this.userService.currentStaffUser.id);
       },error => {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         this.router.navigateByUrl('/main')
       })
     }
+  }
+
+  removeCartItem(userId: string, book: BookCustom) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to remove "'+book.englishName+'" from your cart?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Remove'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cartService.removeCartItem(userId, book.refNo).subscribe(value => {
+          Swal.fire(
+              'Deleted!',
+              'Your Cart item has been deleted.',
+              'success'
+          );
+          this.getAllCartItems(userId);
+        },error => {
+          Swal.fire(
+              'Failed!',
+              'Failed to delete your cart item',
+              'error'
+          );
+        });
+      }
+    });
   }
 }

@@ -13,6 +13,9 @@ import {Student} from "../model/Student";
 })
 export class UserService{
 
+  currentStudentUser!: Student;
+  currentStaffUser!: Staff;
+
   constructor(private http: HttpClient
               ,private config:ConfigService
               ,private router: Router) {}

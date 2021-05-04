@@ -75,49 +75,4 @@ mdb-navbar-brand a{
   border: 1px solid black;
   background-image: url("../../../assets/images/user-picture.png");
   background-size: cover;
-
-  .edit{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    background-color: white;
-    position: absolute;
-    color: black;
-    right: 30px;
-    bottom: 5px;
-    width: 30px;
-    height: 30px;
-
-    &:hover{
-      cursor: pointer;
-      box-shadow: 5px 5px 15px 0px red;
-      width: 32px;
-      height: 32px;
-      background-color: lightblue;
-    }
-  }
-  .mask{
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    opacity: 0;
-    background-color: red;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .delete{
-      width: 75px;
-      height: 75px;
-      border-radius: 50%;
-      background-image: url("../../../assets/images/delete.png");
-      background-size: contain;
-      cursor: pointer;
-    }
-
-    &:hover{
-      opacity: 0.5;
-    }
-  }
 }
