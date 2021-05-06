@@ -136,11 +136,15 @@ export class StudentService {
   uploadImage(image: File,id: string): Observable<String>{
     const fd = new FormData();
     fd.append('file',image,image.name);
-    return this.http.post<String>(this.config.BASE_URL+`/api/v1/students/image/${id}`,fd);
+    return this.http.post(this.config.BASE_URL+`/api/v1/students/image/${id}`,fd,{
+      responseType: 'text'
+    });
   }
 
   deleteImage(id: string): Observable<any>{
-    return this.http.delete(this.config.BASE_URL+`/api/v1/students/image/${id}`);
+    return this.http.delete(this.config.BASE_URL+`/api/v1/students/image/${id}`,{
+      responseType: 'text'
+    });
   }
 
   searchStudentByNumber(id:string,pageIndex: number, pageSize:number): Observable<Array<Student>>{

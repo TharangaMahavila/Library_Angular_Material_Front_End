@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatAccordion} from '@angular/material/expansion';
 import {UserService} from "../../service/user.service";
 import {CartItem} from "../../model/CartItem";
@@ -10,6 +10,7 @@ import {CartService} from "../../service/cart.service";
 import {ConfigService} from "../../service/config.service";
 import {BookCustom} from "../../model/BookCustom";
 import {HttpClient} from "@angular/common/http";
+import {CommunicateService} from "../../service/communicate.service";
 
 @Component({
   selector: 'app-student-profile',
@@ -18,24 +19,26 @@ import {HttpClient} from "@angular/common/http";
 })
 export class StudentProfileComponent implements OnInit {
 
-  cartItems: Array<CartItem> = [];
-
   @ViewChild(MatAccordion)
   accordion!: MatAccordion;
 
   constructor(public userService: UserService
               ,private router: Router
-              ,private cartService: CartService
+              ,public cartService: CartService
               ,private configService: ConfigService
-              ,private http: HttpClient) { }
+              ,private http: HttpClient
+              ,private communicateService: CommunicateService) { }
 
   ngOnInit(): void {
     this.getCurrentUser();
+    this.communicateService.adminMessage$.subscribe(value => {
+      alert(value);
+    })
   }
 
   getAllCartItems(userId: string){
     this.cartService.getAllCartItems(userId).subscribe(value => {
-      this.cartItems = value;
+      this.cartService.cartItems = value;
     },error => {
       this.configService.toastMixin.fire({
         icon: "error",
@@ -93,10 +96,10 @@ export class StudentProfileComponent implements OnInit {
     }
   }
 
-  removeCartItem(userId: string, book: BookCustom) {
+  removeCartItem(cartItem: CartItem) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'You want to remove "'+book.englishName+'" from your cart?',
+      text: 'You want to remove "'+cartItem.bookCustomEntity.englishName+'" from your cart?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -104,17 +107,48 @@ export class StudentProfileComponent implements OnInit {
       confirmButtonText: 'Yes, Remove'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.cartService.removeCartItem(userId, book.refNo).subscribe(value => {
+        this.cartService.removeCartItem(cartItem.userId, cartItem.bookCustomEntity.refNo).subscribe(value => {
           Swal.fire(
               'Deleted!',
               'Your Cart item has been deleted.',
               'success'
           );
-          this.getAllCartItems(userId);
+          this.cartService.cartItems = this.cartService.cartItems.filter(obj => obj !== cartItem );
+          this.communicateService.sendMessage('Cart Item removed');
         },error => {
           Swal.fire(
               'Failed!',
               'Failed to delete your cart item',
+              'error'
+          );
+        });
+      }
+    });
+  }
+
+  requestCartItem(cartItem: CartItem) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to request "'+cartItem.bookCustomEntity.englishName+'"',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Request'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cartService.requestCartItem(cartItem.userId, cartItem.bookCustomEntity.refNo).subscribe(value => {
+          Swal.fire(
+              'Done!',
+              'Your Cart item has been requested.',
+              'success'
+          );
+          this.getAllCartItems(cartItem.userId);
+          this.communicateService.sendMessage('Cart Item requested');
+        },error => {
+          Swal.fire(
+              'Failed!',
+              'Failed to request your cart item',
               'error'
           );
         });

@@ -145,11 +145,7 @@
               <div class="col-12">
                 <mat-card-content>
                   <div class="book-description">
-                      {{card.note}}ipsan Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab atque doloribus earum fugiat fugit harum hic incidunt laborum, minus modi, natus praesentium sit temporibus unde ut veniam veritatis voluptate voluptates.
-                      {{card.note}}ipsan Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab atque doloribus earum fugiat fugit harum hic incidunt laborum, minus modi, natus praesentium sit temporibus unde ut veniam veritatis voluptate voluptates.
-                      {{card.note}}ipsan Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab atque doloribus earum fugiat fugit harum hic incidunt laborum, minus modi, natus praesentium sit temporibus unde ut veniam veritatis voluptate voluptates.
-                      {{card.note}}ipsan Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab atque doloribus earum fugiat fugit harum hic incidunt laborum, minus modi, natus praesentium sit temporibus unde ut veniam veritatis voluptate voluptates.
-                      {{card.note}}ipsan Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab atque doloribus earum fugiat fugit harum hic incidunt laborum, minus modi, natus praesentium sit temporibus unde ut veniam veritatis voluptate voluptates.
+                      {{card.note}}
                   </div>
                 </mat-card-content>
               </div>
@@ -158,7 +154,7 @@
               <mat-card-actions>
                 <div class="d-flex align-items-center ml-3">
                     <mat-icon *ngIf="!card.reference">shopping_cart</mat-icon>
-                    <button class="text-bold" mat-button *ngIf="!card.reference">Add to cart</button>
+                    <button (click)="openBottomSheet(card)" class="text-bold" mat-button *ngIf="!card.reference">Add to cart</button>
                 </div>
               </mat-card-actions>
             </mat-card>

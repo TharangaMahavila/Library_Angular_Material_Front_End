@@ -15,12 +15,12 @@
                         <li class="nav-item dropdown" dropdown>
                             <a dropdownToggle mdbWavesEffect type="button" class="nav-link waves-light" mdbWavesEffect>
                                 <mdb-icon fas icon="fas fa-shopping-cart"></mdb-icon> Cart
-                                <span class="badge badge-danger navbar-badge">{{cartItems.length}}</span>
+                                <span class="badge badge-danger navbar-badge">{{cartService.cartItems.length}}</span>
                             </a>
                             <div (click)="$event.stopPropagation()" *dropdownMenu class="cart dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
                                 <div class="dropdown-menu-lg dropdown-menu-right">
 
-                                    <mat-accordion *ngFor="let cartItem of cartItems">
+                                    <mat-accordion *ngFor="let cartItem of cartService.cartItems">
                                         <mat-expansion-panel class="pt-1 pb-1">
                                             <mat-expansion-panel-header class="pl-2">
                                                 <mat-panel-title class="mr-2">
@@ -38,16 +38,15 @@
                                             </mat-expansion-panel-header>
 
                                             <div class="d-flex justify-content-end">
-                                                <button (click)="removeCartItem((userService.currentStudentUser !== undefined)
-                                                ?userService.currentStudentUser.regNo:userService.currentStaffUser.id,cartItem.bookCustomEntity)" mat-raised-button color="accent">Remove</button>
-                                                <button class="ml-1" mat-raised-button color="primary">Request</button>
+                                                <button (click)="removeCartItem(cartItem)" mat-raised-button color="accent">Remove</button>
+                                                <button [disabled]="cartItem.requestStatus" (click)="requestCartItem(cartItem)" class="ml-1" mat-raised-button color="primary">{{(cartItem.requestStatus === true)?'Pending...':'Request'}}</button>
                                             </div>
 
                                         </mat-expansion-panel>
                                     </mat-accordion>
 
                                 </div>
-                                <div *ngIf="cartItems.length<1" class="cart d-flex justify-content-center align-items-center">
+                                <div *ngIf="cartService.cartItems.length<1" class="cart d-flex justify-content-center align-items-center">
                                     <div class="text-center text-muted">
                                         <p>Your cart is empty!</p>
                                         <p>Add books and send request to proceed</p>

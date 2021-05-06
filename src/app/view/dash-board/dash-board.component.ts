@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {Staff} from "../../model/Staff";
 import {ConfigService} from "../../service/config.service";
 import Swal from "sweetalert2";
+import {CommunicateService} from "../../service/communicate.service";
 
 @Component({
   selector: 'app-dash-board',
@@ -17,7 +18,8 @@ export class DashBoardComponent implements OnInit {
 
   constructor(public userService: UserService
               ,private router: Router
-              ,private configService:ConfigService) { }
+              ,private configService:ConfigService
+              ,private communicateService: CommunicateService) { }
 
   ngOnInit(): void {
     this.userService.getAdminUser().subscribe(value => {
@@ -26,6 +28,10 @@ export class DashBoardComponent implements OnInit {
       localStorage.removeItem('token');
       localStorage.removeItem('role');
       this.router.navigateByUrl('/main')
+    });
+
+    this.communicateService.adminMessage$.subscribe(value => {
+      alert(value);
     });
   }
 

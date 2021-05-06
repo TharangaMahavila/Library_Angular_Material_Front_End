@@ -122,11 +122,15 @@ export class StaffService {
   uploadImage(image: File,id: string): Observable<String>{
     const fd = new FormData();
     fd.append('   ',image,image.name);
-    return this.http.post<String>(this.config.BASE_URL+`/api/v1/staffs/image/${id}`,fd);
+    return this.http.post(this.config.BASE_URL+`/api/v1/staffs/image/${id}`,fd,{
+      responseType: 'text'
+    });
   }
 
   deleteImage(id: string): Observable<any>{
-    return this.http.delete(this.config.BASE_URL+`/api/v1/staffs/image/${id}`);
+    return this.http.delete(this.config.BASE_URL+`/api/v1/staffs/image/${id}`,{
+      responseType: 'text'
+    });
   }
 
   searchStaffByNumber(id:string,pageIndex: number, pageSize:number): Observable<Array<Staff>>{
