@@ -154,4 +154,8 @@ export class HomeComponent implements OnInit {
   bookIssueChart(): void{
 
   }
+
+  sendMessage(message: string) {
+    alert(message);
+  }
 }

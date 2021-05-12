@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatAccordion} from '@angular/material/expansion';
 import {UserService} from "../../service/user.service";
 import {CartItem} from "../../model/CartItem";
@@ -10,30 +10,33 @@ import {CartService} from "../../service/cart.service";
 import {ConfigService} from "../../service/config.service";
 import {BookCustom} from "../../model/BookCustom";
 import {HttpClient} from "@angular/common/http";
-import {CommunicateService} from "../../service/communicate.service";
+import {WebSocketService} from "../../service/web-socket.service";
 
 @Component({
   selector: 'app-student-profile',
   templateUrl: './student-profile.component.html',
   styleUrls: ['./student-profile.component.scss']
 })
-export class StudentProfileComponent implements OnInit {
+export class StudentProfileComponent implements OnInit,OnDestroy {
 
   @ViewChild(MatAccordion)
   accordion!: MatAccordion;
+
+  channels = ['/topic/messages'];
 
   constructor(public userService: UserService
               ,private router: Router
               ,public cartService: CartService
               ,private configService: ConfigService
               ,private http: HttpClient
-              ,private communicateService: CommunicateService) { }
+              ,public webSocket: WebSocketService) { }
 
   ngOnInit(): void {
     this.getCurrentUser();
-    this.communicateService.adminMessage$.subscribe(value => {
-      alert(value);
-    })
+  }
+
+  ngOnDestroy(): void {
+    this.webSocket.closeWebSocket();
   }
 
   getAllCartItems(userId: string){
@@ -78,6 +81,7 @@ export class StudentProfileComponent implements OnInit {
     if(role === 'student'){
       this.userService.getStudentUser().subscribe(value => {
         this.userService.currentStudentUser = value;
+        this.webSocket.openWebSocket(this.channels);
         this.getAllCartItems(this.userService.currentStudentUser.regNo);
       },error => {
         localStorage.removeItem('token');
@@ -87,6 +91,7 @@ export class StudentProfileComponent implements OnInit {
     }else if(role === 'staff'){
       this.userService.getStaffUser().subscribe(value => {
         this.userService.currentStaffUser = value;
+        this.webSocket.openWebSocket(this.channels);
         this.getAllCartItems(this.userService.currentStaffUser.id);
       },error => {
         localStorage.removeItem('token');
@@ -114,7 +119,6 @@ export class StudentProfileComponent implements OnInit {
               'success'
           );
           this.cartService.cartItems = this.cartService.cartItems.filter(obj => obj !== cartItem );
-          this.communicateService.sendMessage('Cart Item removed');
         },error => {
           Swal.fire(
               'Failed!',
@@ -144,7 +148,6 @@ export class StudentProfileComponent implements OnInit {
               'success'
           );
           this.getAllCartItems(cartItem.userId);
-          this.communicateService.sendMessage('Cart Item requested');
         },error => {
           Swal.fire(
               'Failed!',

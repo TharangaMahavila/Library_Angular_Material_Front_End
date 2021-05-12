@@ -9,6 +9,7 @@ import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {AddCartWithLogginComponent} from "./add-cart-with-loggin/add-cart-with-loggin.component";
 import {UserService} from "../../service/user.service";
 import {CartService} from "../../service/cart.service";
+import {WebSocketService} from "../../service/web-socket.service";
 
 @Component({
   selector: 'app-search-result',
@@ -33,11 +34,11 @@ export class SearchResultComponent implements OnInit{
               ,private config: ConfigService
               ,public bottomSheet: MatBottomSheet
               ,private userService: UserService
-              ,private cartService: CartService) { }
+              ,private cartService: CartService
+              ,public webSocketService: WebSocketService) { }
 
 
   ngOnInit(): void {
-
   }
 
   searchBook(searchKey: string,pageSize: string, pageIndex: string): void{

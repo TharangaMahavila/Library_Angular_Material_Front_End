@@ -1,38 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from "../../service/user.service";
 import {Router} from "@angular/router";
 import {Staff} from "../../model/Staff";
 import {ConfigService} from "../../service/config.service";
 import Swal from "sweetalert2";
-import {CommunicateService} from "../../service/communicate.service";
+import {WebSocketService} from "../../service/web-socket.service";
 
 @Component({
   selector: 'app-dash-board',
   templateUrl: './dash-board.component.html',
   styleUrls: ['./dash-board.component.scss']
 })
-export class DashBoardComponent implements OnInit {
+export class DashBoardComponent implements OnInit,OnDestroy {
 
   currentUser!: Staff;
   currentMenu!: string
 
+  channels = ['/topic/messages'];
+
   constructor(public userService: UserService
               ,private router: Router
               ,private configService:ConfigService
-              ,private communicateService: CommunicateService) { }
+              ,private webSocket: WebSocketService) { }
 
   ngOnInit(): void {
     this.userService.getAdminUser().subscribe(value => {
       this.currentUser= value;
+      this.webSocket.openWebSocket(this.channels);
     },error => {
       localStorage.removeItem('token');
       localStorage.removeItem('role');
       this.router.navigateByUrl('/main')
     });
-
-    this.communicateService.adminMessage$.subscribe(value => {
-      alert(value);
-    });
+  }
+  ngOnDestroy(): void {
+    this.webSocket.closeWebSocket();
   }
 
   logOut() {

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild, OnInit, ElementRef} from '@angular/core';
+import {AfterViewInit, Component, ViewChild, OnInit, ElementRef, OnDestroy} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
@@ -7,13 +7,14 @@ import {Router} from "@angular/router";
 import {ConfigService} from "../../service/config.service";
 import {LoaderService} from "../../service/loader.service";
 import {Title} from "@angular/platform-browser";
+import {WebSocketService} from "../../service/web-socket.service";
 
 @Component({
   selector: 'app-main-menu',
   templateUrl: './main-menu.component.html',
   styleUrls: ['./main-menu.component.scss']
 })
-export class MainMenuComponent implements OnInit{
+export class MainMenuComponent implements OnInit,OnDestroy{
 
   @ViewChild('frm')
   frm!: FormGroup;
@@ -21,17 +22,24 @@ export class MainMenuComponent implements OnInit{
   txtUsername!: ElementRef;
   @ViewChild('password')
   txtPassword!: ElementRef;
+  channels = ['/topic/messages'];
 
     constructor(private fb: FormBuilder
                 ,private userService: UserService
                 ,private router: Router
                 ,private config: ConfigService
                 ,public loaderService: LoaderService
-                ,private titleService: Title) {
+                ,private titleService: Title
+                ,private webSocketService: WebSocketService) {
     }
 
   ngOnInit(): void {
-      this.titleService.setTitle("BNS-Home page")
+      this.titleService.setTitle("BNS-Home page");
+
+      this.webSocketService.openWebSocket(this.channels);
+  }
+  ngOnDestroy(): void {
+      this.webSocketService.closeWebSocket();
   }
 
   form = new FormGroup({
