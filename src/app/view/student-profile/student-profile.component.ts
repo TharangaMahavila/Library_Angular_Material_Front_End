@@ -22,8 +22,6 @@ export class StudentProfileComponent implements OnInit,OnDestroy {
   @ViewChild(MatAccordion)
   accordion!: MatAccordion;
 
-  channels = ['/topic/messages'];
-
   constructor(public userService: UserService
               ,private router: Router
               ,public cartService: CartService
@@ -81,7 +79,7 @@ export class StudentProfileComponent implements OnInit,OnDestroy {
     if(role === 'student'){
       this.userService.getStudentUser().subscribe(value => {
         this.userService.currentStudentUser = value;
-        this.webSocket.openWebSocket(this.channels);
+        this.webSocket.commonMessageForAll();
         this.getAllCartItems(this.userService.currentStudentUser.regNo);
       },error => {
         localStorage.removeItem('token');
@@ -91,7 +89,7 @@ export class StudentProfileComponent implements OnInit,OnDestroy {
     }else if(role === 'staff'){
       this.userService.getStaffUser().subscribe(value => {
         this.userService.currentStaffUser = value;
-        this.webSocket.openWebSocket(this.channels);
+        this.webSocket.commonMessageForAll();
         this.getAllCartItems(this.userService.currentStaffUser.id);
       },error => {
         localStorage.removeItem('token');

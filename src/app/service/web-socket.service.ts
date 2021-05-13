@@ -7,38 +7,29 @@ import {Stomp} from "@stomp/stompjs";
 })
 export class WebSocketService {
 
-  webSocket!: WebSocket;
-
   stompClient: any
 
   constructor() { }
 
-  public openWebSocket(channels: string[]){
+  public commonMessageForAll(){
     let ws = new SockJS('http://localhost:8080/websocket');
     this.stompClient = Stomp.over(ws);
     this.stompClient.connect({},()=>{
-      for (const channel of channels) {
-        this.stompClient.subscribe(''+channel+'',(data:any)=>{
-          alert('subscribed'+data.toString());
-        });
-      }
-    });
+      this.stompClient.subscribe('/topic/messages/common',(data:any)=>{
+        alert(JSON.parse(data.body).content);
+      });
+    },this.errorCallBack);
   }
 
   public closeWebSocket(){
     if (this.stompClient !== null) {
       this.stompClient.disconnect();
     }
-    alert("Disconnected");
   }
 
-  errorCallBack(channels:string[]) {
+  errorCallBack() {
     setTimeout(() => {
-      this.openWebSocket(channels);
+      this.commonMessageForAll();
     }, 5000);
-  }
-
-  onMessageReceived(message:any) {
-    alert("Message Recieved from Server :: " + message);
   }
 }

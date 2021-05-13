@@ -16,8 +16,6 @@ export class DashBoardComponent implements OnInit,OnDestroy {
   currentUser!: Staff;
   currentMenu!: string
 
-  channels = ['/topic/messages'];
-
   constructor(public userService: UserService
               ,private router: Router
               ,private configService:ConfigService
@@ -26,7 +24,7 @@ export class DashBoardComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.userService.getAdminUser().subscribe(value => {
       this.currentUser= value;
-      this.webSocket.openWebSocket(this.channels);
+      this.webSocket.commonMessageForAll();
     },error => {
       localStorage.removeItem('token');
       localStorage.removeItem('role');

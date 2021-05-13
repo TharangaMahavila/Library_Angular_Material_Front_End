@@ -22,7 +22,6 @@ export class MainMenuComponent implements OnInit,OnDestroy{
   txtUsername!: ElementRef;
   @ViewChild('password')
   txtPassword!: ElementRef;
-  channels = ['/topic/messages'];
 
     constructor(private fb: FormBuilder
                 ,private userService: UserService
@@ -36,7 +35,7 @@ export class MainMenuComponent implements OnInit,OnDestroy{
   ngOnInit(): void {
       this.titleService.setTitle("BNS-Home page");
 
-      this.webSocketService.openWebSocket(this.channels);
+      this.webSocketService.commonMessageForAll();
   }
   ngOnDestroy(): void {
       this.webSocketService.closeWebSocket();
