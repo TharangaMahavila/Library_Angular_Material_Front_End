@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import {HttpErrorResponse} from "@angular/common/http";
 import {throwError} from "rxjs";
 import Swal from "sweetalert2";
+import {ToastrService} from "ngx-toastr";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigService {
 
-  //BASE_URL = 'http://139.59.90.226:8080';
-  BASE_URL = 'http://localhost:8080';
+  BASE_URL = 'http://139.59.90.226:8080';
+  //BASE_URL = 'http://localhost:8080';
 
-  constructor() { }
+  constructor(private toastr: ToastrService) { }
 
   public handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -46,4 +47,24 @@ export class ConfigService {
       toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
   });
+
+  showMessage(sender: string, message: string){
+    this.toastr.info(
+        `<div class="d-flex align-items-center" style="margin-left: 20px; padding-left: 20px">
+            <div style="background-color: yellow !important;">
+                <div class="message-image"></div>
+            </div>
+            <div>
+            <h6>${sender}</h6>
+            <div>${message}</div>
+            </div>
+        </div>`
+        , '',{
+      closeButton: true,
+      enableHtml: true,
+      progressBar: true,
+      progressAnimation: 'increasing',
+      positionClass: 'toast-bottom-right',
+    });
+  }
 }

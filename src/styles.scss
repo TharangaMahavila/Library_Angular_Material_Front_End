@@ -10,4 +10,19 @@
   font-weight: bold;
 }
 
+.toast-info{
+  background-color: #222222 !important;
+  color:#FFFFFF;
+  background-image:none !important; /*Removes Pesky Default Toast Icon*/
+}
 
+.message-image{
+  background-image:url("./assets/images/tharanga.jpeg") !important;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-size: cover;
+  margin-right: 20px;
+  text-align: left;
+  justify-content: left;
+}

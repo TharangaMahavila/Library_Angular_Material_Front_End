@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BookService} from "../../../service/book.service";
 import {ConfigService} from "../../../service/config.service";
 import {StudentService} from "../../../service/student.service";
@@ -7,6 +7,7 @@ import {Student} from "../../../model/Student";
 import {Router} from "@angular/router";
 import {ChartType} from "chart.js";
 import {Title} from "@angular/platform-browser";
+import {MessageService} from "../../../service/message.service";
 
 @Component({
   selector: 'app-main',
@@ -24,6 +25,8 @@ export class HomeComponent implements OnInit {
   recentStudents: Array<Student> = [];
   today = new Date().toString().slice(0,15);
   beforeMonth = this.getBeforeWeek().toString().slice(0,15);
+  messages: Array<string> = [];
+
   barChartOptions = {
     scaleShowVerticalLines: false,
     responsive: true
@@ -36,12 +39,16 @@ export class HomeComponent implements OnInit {
   barChartLegend = true;
   barChartType:ChartType = 'bar';
 
+  @ViewChild('message')
+  txtMessage!: ElementRef
+
   constructor(private bookService: BookService
               ,public configService: ConfigService
               ,private studentService: StudentService
               ,private staffService: StaffService
               ,private router: Router
-              ,private titleService: Title) { }
+              ,private titleService: Title
+              ,private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle("BNS-Dashboard");
@@ -156,6 +163,16 @@ export class HomeComponent implements OnInit {
   }
 
   sendMessage(message: string) {
-    alert(message);
+    if(message !== ''){
+      this.messageService.sendCommonMessage(message).subscribe(value => {
+        (this.txtMessage.nativeElement as HTMLInputElement).value = '';
+        this.messages.push(message);
+      },error => {
+        this.configService.toastMixin.fire({
+          icon: "error",
+          title: 'Something went wrong'
+        })
+      });
+    }
   }
 }

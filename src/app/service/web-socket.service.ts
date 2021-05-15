@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as SockJS from "sockjs-client";
 import {Stomp} from "@stomp/stompjs";
+import {ConfigService} from "./config.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,14 +10,16 @@ export class WebSocketService {
 
   stompClient: any
 
-  constructor() { }
+  constructor(private configService: ConfigService) { }
 
   public commonMessageForAll(){
-    let ws = new SockJS('http://localhost:8080/websocket');
+    let ws = new SockJS(this.configService.BASE_URL+'/websocket');
     this.stompClient = Stomp.over(ws);
     this.stompClient.connect({},()=>{
       this.stompClient.subscribe('/topic/messages/common',(data:any)=>{
-        alert(JSON.parse(data.body).content);
+        let audio = new Audio('../../assets/sounds/notification.mp3');
+        audio.play();
+        this.configService.showMessage('Admin',JSON.parse(data.body).content);
       });
     },this.errorCallBack);
   }

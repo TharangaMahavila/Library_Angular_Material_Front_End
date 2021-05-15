@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Author} from "../model/Author";
+import {ConfigService} from "./config.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +13,18 @@ export class AuthorService {
   selectedItems: Array<Author> = [];
   isTakenAuthorName = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient
+              ,private config: ConfigService) { }
 
   saveAuthor(name: string): Observable<Author>{
     const body:Author = {
       id:0,
       name:name
     }
-    return this.http.post<Author>(`http://localhost:8080/api/v1/authors`,body);
+    return this.http.post<Author>(this.config.BASE_URL+`/api/v1/authors`,body);
   }
 
   getAllAuthors(): Observable<Array<Author>>{
-    return this.http.get<Array<Author>>(`http://localhost:8080/api/v1/authors`);
+    return this.http.get<Array<Author>>(this.config.BASE_URL+`/api/v1/authors`);
   }
 }

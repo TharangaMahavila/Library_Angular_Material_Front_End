@@ -18,7 +18,7 @@ export class DashBoardComponent implements OnInit,OnDestroy {
 
   constructor(public userService: UserService
               ,private router: Router
-              ,private configService:ConfigService
+              ,public configService:ConfigService
               ,private webSocket: WebSocketService) { }
 
   ngOnInit(): void {

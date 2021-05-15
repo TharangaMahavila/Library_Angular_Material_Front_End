@@ -56,6 +56,7 @@ import { SettingComponent } from './view/dash-board/setting/setting.component';
 import { StepperComponent } from './view/dash-board/stepper/stepper.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatStepperModule} from "@angular/material/stepper";
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -117,6 +118,7 @@ import {MatStepperModule} from "@angular/material/stepper";
     ChartsModule,
     MatTabsModule,
     MatStepperModule,
+    ToastrModule.forRoot()
   ],
   providers: [BookService,
     {
