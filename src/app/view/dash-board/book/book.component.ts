@@ -105,7 +105,7 @@ export class BookComponent implements OnInit {
   applyFilterByBookName(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.bookService.books.length = 0;
-    this.bookService.searchBookByName(filterValue,this.bookService.pageIndex.toString(),this.bookService.pageSize.toString()).subscribe(value => {
+    this.bookService.searchBookByName(filterValue,this.bookService.pageSize.toString(),this.bookService.pageIndex.toString()).subscribe(value => {
       this.bookService.books = value;
       this.bookService.dataSource.data = value;
     },error => {

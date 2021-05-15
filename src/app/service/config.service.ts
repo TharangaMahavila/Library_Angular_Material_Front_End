@@ -9,8 +9,8 @@ import {ToastrService} from "ngx-toastr";
 })
 export class ConfigService {
 
-  BASE_URL = 'http://139.59.90.226:8080';
-  //BASE_URL = 'http://localhost:8080';
+  //BASE_URL = 'http://139.59.90.226:8080';
+  BASE_URL = 'http://localhost:8080';
 
   constructor(private toastr: ToastrService) { }
 

@@ -164,9 +164,9 @@ export class HomeComponent implements OnInit {
 
   sendMessage(message: string) {
     if(message !== ''){
+      (this.txtMessage.nativeElement as HTMLInputElement).value = '';
+      this.messages.push(message);
       this.messageService.sendCommonMessage(message).subscribe(value => {
-        (this.txtMessage.nativeElement as HTMLInputElement).value = '';
-        this.messages.push(message);
       },error => {
         this.configService.toastMixin.fire({
           icon: "error",

@@ -1,178 +1,181 @@
 <div [ngClass]="bookService.mode === 'separate' ? 'content-wrapper': ''" class="mainDiv">
-    <div class="row">
-        <div class="col-12 d-flex justify-content-end">
-            <button class="btn-dialog-close d-flex justify-content-center align-items-center" (click)="onFormClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
-        </div>
+    <div class="d-flex justify-content-end">
+        <button class="btn-dialog-close d-flex justify-content-center align-items-center" (click)="onFormClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
     </div>
-    <mat-tab-group dynamicHeight>
+    <mat-tab-group animationDuration="1000ms">
         <mat-tab label="Book Registration">
-            <div class="row">
+            <div class="row tab">
                 <div class="col-12">
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-center">
-                            <h4>Book Registration</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <mat-card class="box form-card">
-                                <form [formGroup]="bookService.form" class="example-form" style="font-size: 12px;" (ngSubmit)="submitForm()">
-                                    <mat-card-content>
+                    <mat-card class="box form-card">
+                        <form [formGroup]="bookService.form" class="example-form" style="font-size: 12px;" (ngSubmit)="submitForm()">
+                            <mat-card-content>
+                                <div class="row">
+                                    <div class="col-12">
                                         <div class="row">
-                                            <div class="col-12">
-                                                <div class="row">
-                                                    <div class="col-12 col-md-3">
-                                                        <div class="profilePhoto img-fluid">
-                                                            <div class="mask">
-                                                                <div class="delete" (click)="deleteProfileImage()">
-                                                                </div>
-                                                            </div>
-                                                            <div class="edit" (click)="editProfilePhoto()">
-                                                                <span class=""><mat-icon matSuffix>mode_edit</mat-icon></span>
-                                                            </div>
+                                            <div class="col-12 col-md-3">
+                                                <div class="profilePhoto img-fluid">
+                                                    <div class="mask">
+                                                        <div class="delete" (click)="deleteProfileImage()">
                                                         </div>
                                                     </div>
-                                                    <div class="col-12 col-md-9 d-flex align-items-end">
+                                                    <div class="edit" (click)="editProfilePhoto()">
+                                                        <span class=""><mat-icon matSuffix>mode_edit</mat-icon></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-9 d-flex align-items-end">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <!--Start Book Id fields here-->
                                                         <div class="row">
                                                             <div class="col-12">
-                                                                <!--Start Book Id fields here-->
-                                                                <div class="row">
-                                                                    <div class="col-12">
-                                                                        <mat-form-field [style.width.%]=100>
-                                                                            <mat-label>Book Id</mat-label>
-                                                                            <input matInput formControlName="bookId"required>
-                                                                            <mat-error *ngIf="bookService.bookRegisterFormControl.bookId.invalid">
-                                                                                {{bookService.bookRegisterFormControl.bookId.hasError('required')?'Book Id is required':''}}
-                                                                            </mat-error>
-                                                                        </mat-form-field>
-                                                                    </div>
-                                                                </div>
+                                                                <mat-form-field [style.width.%]=100>
+                                                                    <mat-label>Book Id</mat-label>
+                                                                    <input matInput formControlName="bookId"required>
+                                                                    <mat-error *ngIf="bookService.bookRegisterFormControl.bookId.invalid">
+                                                                        {{bookService.bookRegisterFormControl.bookId.hasError('required')?'Book Id is required':''}}
+                                                                    </mat-error>
+                                                                </mat-form-field>
                                                             </div>
-                                                            <!--End Book Id fields here-->
-                                                            <!--Guardian Name field start here-->
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <mat-form-field [style.width.%]=100>
-                                                                        <mat-label>sinhala Name</mat-label>
-                                                                        <input matInput formControlName="sinhalaName"required>
-                                                                        <mat-error *ngIf="bookService.bookRegisterFormControl.sinhalaName.invalid">
-                                                                            {{bookService.bookRegisterFormControl.sinhalaName.hasError('required')?'Sinhala Name is required':''}}
-                                                                        </mat-error>
-                                                                    </mat-form-field>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <mat-form-field [style.width.%]=100>
-                                                                        <mat-label>English Name </mat-label>
-                                                                        <input matInput formControlName="englishName"required>
-                                                                        <mat-error *ngIf="bookService.bookRegisterFormControl.englishName.invalid">
-                                                                            {{bookService.bookRegisterFormControl.englishName.hasError('required')?'English Name is required':''}}
-                                                                        </mat-error>
-                                                                    </mat-form-field>
-                                                                </div>
-                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--End Book Id fields here-->
+                                                    <!--Guardian Name field start here-->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <mat-form-field [style.width.%]=100>
+                                                                <mat-label>sinhala Name</mat-label>
+                                                                <input matInput formControlName="sinhalaName"required>
+                                                                <mat-error *ngIf="bookService.bookRegisterFormControl.sinhalaName.invalid">
+                                                                    {{bookService.bookRegisterFormControl.sinhalaName.hasError('required')?'Sinhala Name is required':''}}
+                                                                </mat-error>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <mat-form-field [style.width.%]=100>
+                                                                <mat-label>English Name </mat-label>
+                                                                <input matInput formControlName="englishName"required>
+                                                                <mat-error *ngIf="bookService.bookRegisterFormControl.englishName.invalid">
+                                                                    {{bookService.bookRegisterFormControl.englishName.hasError('required')?'English Name is required':''}}
+                                                                </mat-error>
+                                                            </mat-form-field>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="row">
-                                            <div class="col-12 col-md-6">
-                                                <mat-form-field [style.width.%]=100>
-                                                    <mat-label> Year </mat-label>
-                                                    <input matInput placeholder="ex.2010" formControlName="year">
-                                                    <mat-error *ngIf="bookService.bookRegisterFormControl.year.invalid">
-                                                        {{bookService.bookRegisterFormControl.year.hasError('required') ? 'Year is required'
-                                                        :bookService.bookRegisterFormControl.year.hasError('pattern')?'Year can not contain any special characters':''}}
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-4">
+                                        <mat-form-field [style.width.%]=100>
+                                            <mat-label> Year </mat-label>
+                                            <input matInput placeholder="ex.2010" formControlName="year">
+                                            <mat-error *ngIf="bookService.bookRegisterFormControl.year.invalid">
+                                                {{bookService.bookRegisterFormControl.year.hasError('required') ? 'Year is required'
+                                                :bookService.bookRegisterFormControl.year.hasError('pattern')?'Year can not contain any special characters':''}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
 
-                                            <div class="col-12 col-md-6">
-                                                <mat-form-field [style.width.%]=100>
-                                                    <mat-label> Price</mat-label>
-                                                    <input matInput placeholder="ex.100" formControlName="price">
-                                                    <mat-error *ngIf="bookService.bookRegisterFormControl.price.invalid">
-                                                        {{bookService.bookRegisterFormControl.price.hasError('pattern')
-                                                        ? 'price can not contain any special characters':''}}
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </div>
+                                    <div class="col-12 col-md-4">
+                                        <mat-form-field [style.width.%]=100>
+                                            <mat-label> Price</mat-label>
+                                            <input matInput placeholder="ex.100" formControlName="price">
+                                            <mat-error *ngIf="bookService.bookRegisterFormControl.price.invalid">
+                                                {{bookService.bookRegisterFormControl.price.hasError('pattern')
+                                                ? 'price can not contain any special characters':''}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-12 col-md-4">
+                                        <mat-form-field [style.width.%]=100>
+                                            <mat-label> pages </mat-label>
+                                            <input matInput formControlName="pages"required>
+                                            <mat-error *ngIf="bookService.bookRegisterFormControl.pages.invalid">
+                                                {{bookService.bookRegisterFormControl.pages.hasError('pattern')
+                                                ?'pages can not contain any special characters':''}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <mat-form-field [style.width.%]=100>
+                                            <mat-label>Medium</mat-label>
+                                            <mat-select formControlName="medium">
+                                                <mat-option *ngFor="let medium of mediums" [value]="medium">
+                                                    {{medium}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="bookService.bookRegisterFormControl.medium.invalid">
+                                                {{bookService.bookRegisterFormControl.medium.hasError('required')?'medium is required':''}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 text-center">
+                                        <label for="singleFile">Upload pdf book</label>
+                                        <input id="singleFile" type="file" accept="application/pdf" [fileUploadInputFor]= "fileUploadQueue"/>
+                                        <br>
+
+                                        <mat-file-upload-queue #fileUploadQueue
+                                                               [fileAlias]="'file'"
+                                                               [httpUrl]="'http://localhost:8180/jax-rs-jersey-application-sample'">
+
+                                            <mat-file-upload [file]="file" [id]="i" *ngFor="let file of fileUploadQueue.files; let i = index"></mat-file-upload>
+                                        </mat-file-upload-queue>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!--Radio button field start here-->
+                                    <div class="col-12 d-flex align-items-center">
+                                        <mat-form-field [style.width.%]=100>
+                                            <mat-label>Note</mat-label>
+                                            <textarea matInput formControlName="note"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                    <!--Radio button field end here-->
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 d-flex">
+                                        <div [style.width.%]="85">
+                                            <ng-multiselect-dropdown
+                                                    formControlName="author"
+                                                    [placeholder]="'Select the Author'"
+                                                    [settings]="dropdownSettings"
+                                                    [data]="authorService.dropdownList"
+                                                    [(ngModel)]="authorService.selectedItems"
+                                                    (onSelect)="onItemSelect($event)"
+                                                    (onSelectAll)="onSelectAll($event)"
+                                            ></ng-multiselect-dropdown>
+                                            <mat-error *ngIf="bookService.bookRegisterFormControl.author.invalid">
+                                                {{bookService.bookRegisterFormControl.author.hasError('required')?'Author is required':''}}
+                                            </mat-error>
                                         </div>
-
-                                        <div class="row">
-                                            <div class="col-12 col-md-6">
-                                                <mat-form-field [style.width.%]=100>
-                                                    <mat-label> pages </mat-label>
-                                                    <input matInput formControlName="pages"required>
-                                                    <mat-error *ngIf="bookService.bookRegisterFormControl.pages.invalid">
-                                                        {{bookService.bookRegisterFormControl.pages.hasError('pattern')
-                                                        ?'pages can not contain any special characters':''}}
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="col-12 col-md-6">
-                                                <mat-form-field [style.width.%]=100>
-                                                    <mat-label>Medium</mat-label>
-                                                    <input matInput formControlName="medium">
-                                                    <select (click)="test();" matNativeControl name="medium" [(ngModel)]="selectedMedium">
-                                                        <option *ngFor="let medium of medium" [ngValue]="medium">{{medium}}</option>
-                                                    </select>
-                                                    <mat-error *ngIf="bookService.bookRegisterFormControl.medium.invalid">
-                                                        {{bookService.bookRegisterFormControl.medium.hasError('required')?'medium is required':''}}
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <!--Radio button field start here-->
-                                            <div class="col-12 d-flex align-items-center">
-                                                <mat-form-field [style.width.%]=100>
-                                                    <mat-label>Note</mat-label>
-                                                    <textarea matInput formControlName="note"></textarea>
-                                                </mat-form-field>
-                                            </div>
-                                            <!--Radio button field end here-->
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-12 d-flex">
-                                                <div [style.width.%]="90">
-                                                    <ng-multiselect-dropdown
-                                                            formControlName="author"
-                                                            [placeholder]="'Select the Author'"
-                                                            [settings]="dropdownSettings"
-                                                            [data]="authorService.dropdownList"
-                                                            [(ngModel)]="authorService.selectedItems"
-                                                            (onSelect)="onItemSelect($event)"
-                                                            (onSelectAll)="onSelectAll($event)"
-                                                    ></ng-multiselect-dropdown>
-                                                    <mat-error *ngIf="bookService.bookRegisterFormControl.author.invalid">
-                                                        {{bookService.bookRegisterFormControl.author.hasError('required')?'Author is required':''}}
-                                                    </mat-error>
-                                                </div>
-                                                <div [style.width.%]="8" class="ml-3 d-flex align-items-start">
-                                                    <button mat-raised-button (click)="openBottomSheet()">Add Author</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </mat-card-content>
-                                    <div class="row">
-                                        <div class="col-12 d-flex justify-content-center">
-                                            <button mat-stroked-button class="btn-block btn-register button" [style.width.%]=50>Register</button>
+                                        <div [style.width.%]="15" class="ml-3 d-flex align-items-start">
+                                            <button mat-raised-button (click)="openBottomSheet()">Add Author</button>
                                         </div>
                                     </div>
-                                </form>
-                            </mat-card>
-                        </div>
-                    </div>
+                                </div>
+                            </mat-card-content>
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <button mat-stroked-button class="btn-block btn-register button" [style.width.%]=50>Register</button>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-card>
                 </div>
             </div>
         </mat-tab>
         <mat-tab label="Book Reference Registration">
-            <div class="row">
+            <div class="row tab">
                 <div class="col-12">
                     <form [formGroup]="bookService.referanceForm" class="example-form" style="font-size: 12px;" (ngSubmit)="submitReferenceForm()">
                         <div class="row mt-4">

@@ -57,6 +57,7 @@ import { StepperComponent } from './view/dash-board/stepper/stepper.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatStepperModule} from "@angular/material/stepper";
 import { ToastrModule } from 'ngx-toastr';
+import { MatFileUploadModule } from 'angular-material-fileupload';
 
 
 @NgModule({
@@ -118,6 +119,7 @@ import { ToastrModule } from 'ngx-toastr';
     ChartsModule,
     MatTabsModule,
     MatStepperModule,
+    MatFileUploadModule,
     ToastrModule.forRoot()
   ],
   providers: [BookService,

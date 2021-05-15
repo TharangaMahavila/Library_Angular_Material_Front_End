@@ -24,8 +24,7 @@ export class BookRegistrationComponent implements OnInit {
   dropdownSettingsSupplier!:IDropdownSettings;
   dropdownSettingsRack!: IDropdownSettings;
   searchedBook = false;
-  medium: string[] = ['Sinhala','English','Tamil'];
-  selectedMedium: any;
+  mediums: string[] = ['Sinhala','English','Tamil'];
 
   constructor(private dialogRef: MatDialogRef<BookRegistrationComponent>
       ,public bookService: BookService
@@ -110,6 +109,7 @@ export class BookRegistrationComponent implements OnInit {
     this.authorService.getAllAuthors().subscribe(value => {
       this.authorService.dropdownList = value;
     },error => {
+      alert(JSON.stringify(error))
       this.configService.toastMixin.fire({
         icon: 'error',
         title: 'Failed to load the authors'
@@ -157,9 +157,6 @@ export class BookRegistrationComponent implements OnInit {
 
   onSelectAllRack(items: any) {
     console.log(items);
-  }
-  test(): void {
-    alert(this.selectedMedium);
   }
 
   submitReferenceForm() {
