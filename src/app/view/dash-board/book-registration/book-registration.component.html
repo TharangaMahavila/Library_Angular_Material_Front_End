@@ -68,7 +68,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-12 col-md-4">
+                                    <div class="col-12 col-md-3">
                                         <mat-form-field [style.width.%]=100>
                                             <mat-label> Year </mat-label>
                                             <input matInput placeholder="ex.2010" formControlName="year">
@@ -79,7 +79,7 @@
                                         </mat-form-field>
                                     </div>
 
-                                    <div class="col-12 col-md-4">
+                                    <div class="col-12 col-md-3">
                                         <mat-form-field [style.width.%]=100>
                                             <mat-label> Price</mat-label>
                                             <input matInput placeholder="ex.100" formControlName="price">
@@ -90,7 +90,7 @@
                                         </mat-form-field>
                                     </div>
 
-                                    <div class="col-12 col-md-4">
+                                    <div class="col-12 col-md-3">
                                         <mat-form-field [style.width.%]=100>
                                             <mat-label> pages </mat-label>
                                             <input matInput formControlName="pages"required>
@@ -100,10 +100,8 @@
                                             </mat-error>
                                         </mat-form-field>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
+                                    <div class="col-12 col-md-3">
                                         <mat-form-field [style.width.%]=100>
                                             <mat-label>Medium</mat-label>
                                             <mat-select formControlName="medium">
@@ -116,18 +114,120 @@
                                             </mat-error>
                                         </mat-form-field>
                                     </div>
+                                </div>
 
-                                    <div class="col-12 col-md-6 text-center">
-                                        <label for="singleFile">Upload pdf book</label>
+                                <div class="row">
+                                    <div class="col-12 text-center">
+
+                                        <mat-expansion-panel>
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    Upload pdf book
+                                                </mat-panel-title>
+                                                <mat-panel-description class="d-flex justify-content-between">
+                                                    E-Book for everyone | just download and read
+                                                    <i class="fas fa-file-pdf fa-2x"></i>
+                                                </mat-panel-description>
+                                            </mat-expansion-panel-header>
+
+                                            <!--<label for="singleFile">Upload pdf book</label>
                                         <input id="singleFile" type="file" accept="application/pdf" [fileUploadInputFor]= "fileUploadQueue"/>
                                         <br>
 
                                         <mat-file-upload-queue #fileUploadQueue
-                                                               [fileAlias]="'file'"
-                                                               [httpUrl]="'http://localhost:8180/jax-rs-jersey-application-sample'">
+                                                               [fileAlias]="'pdf'"
+                                                               [httpUrl]="configService.BASE_URL+'/api/v1/books/uploadPdf/B001'">
 
                                             <mat-file-upload [file]="file" [id]="i" *ngFor="let file of fileUploadQueue.files; let i = index"></mat-file-upload>
-                                        </mat-file-upload-queue>
+                                        </mat-file-upload-queue>-->
+
+                                            <div class="row">
+
+                                                <div class="col-12 mb-2">
+
+                                                    <div ng2FileDrop
+                                                         [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                                                         (fileOver)="fileOverBase($event)"
+                                                         [uploader]="uploader"
+                                                         class="well my-drop-zone mb-2" style="height: 100px">
+                                                        Drag and Drop a pdf here
+                                                    </div>
+
+                                                    <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
+
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <p class="text-left">Queue length: {{ uploader?.queue?.length }}</p>
+
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th width="50%">Name</th>
+                                                            <th>Size</th>
+                                                            <th>Progress</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr *ngFor="let item of uploader.queue">
+                                                            <td><strong>{{ item?.file?.name }}</strong></td>
+                                                            <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                                                            <td *ngIf="uploader.options.isHTML5">
+                                                                <div class="progress" style="margin-bottom: 0;">
+                                                                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span *ngIf="item.isSuccess"><i class="fas fa-check"></i></span>
+                                                                <span *ngIf="item.isCancel"><i class="fas fa-times"></i></span>
+                                                                <span *ngIf="item.isError"><i class="fas fa-exclamation"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-success btn-xs"
+                                                                        (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning btn-xs"
+                                                                        (click)="item.cancel()" [disabled]="!item.isUploading">
+                                                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-xs"
+                                                                        (click)="item.remove()">
+                                                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <div>
+                                                        <div class="mb-2">
+                                                            <p class="text-left">Queue progress:</p>
+                                                            <div class="progress mt-2" style="">
+                                                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" class="btn btn-success btn-s"
+                                                                (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                                                            <span class="glyphicon glyphicon-upload"></span> Upload all
+                                                        </button>
+                                                        <button type="button" class="btn btn-warning btn-s"
+                                                                (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                                                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger btn-s"
+                                                                (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                                                            <span class="glyphicon glyphicon-trash"></span> Remove all
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </mat-expansion-panel>
                                     </div>
                                 </div>
 

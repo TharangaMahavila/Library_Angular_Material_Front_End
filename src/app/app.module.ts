@@ -58,6 +58,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatStepperModule} from "@angular/material/stepper";
 import { ToastrModule } from 'ngx-toastr';
 import { MatFileUploadModule } from 'angular-material-fileupload';
+import {FileUploadModule} from "ng2-file-upload";
 
 
 @NgModule({
@@ -120,7 +121,8 @@ import { MatFileUploadModule } from 'angular-material-fileupload';
     MatTabsModule,
     MatStepperModule,
     MatFileUploadModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    FileUploadModule
   ],
   providers: [BookService,
     {

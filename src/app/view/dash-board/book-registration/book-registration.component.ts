@@ -12,6 +12,9 @@ import {RackRegistrationComponent} from "./rack-registration/rack-registration.c
 import {BookService} from "../../../service/book.service";
 import {SupplierService} from "../../../service/supplier.service";
 import {RackService} from "../../../service/rack.service";
+import {FileUploader} from "ng2-file-upload";
+
+const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
 
 @Component({
   selector: 'app-book-registration',
@@ -26,13 +29,18 @@ export class BookRegistrationComponent implements OnInit {
   searchedBook = false;
   mediums: string[] = ['Sinhala','English','Tamil'];
 
+  uploader!:FileUploader;
+  hasBaseDropZoneOver!:boolean;
+  hasAnotherDropZoneOver!:boolean;
+  response!:string;
+
   constructor(private dialogRef: MatDialogRef<BookRegistrationComponent>
       ,public bookService: BookService
       ,public supplierService: SupplierService
       ,public rackService: RackService
       ,private bottomSheet: MatBottomSheet
       ,public authorService: AuthorService
-      ,private configService: ConfigService) { }
+      ,public configService: ConfigService) { }
 
 
   ngOnInit(): void {
@@ -67,6 +75,38 @@ export class BookRegistrationComponent implements OnInit {
     this.getAllAuthors();
     this.getAllSupplier();
     this.getAllrack();
+
+    this.uploader = new FileUploader({
+      url: URL,
+      disableMultipart: true, // 'DisableMultipart' must be 'true' for formatDataFunction to be called.
+      formatDataFunctionIsAsync: true,
+      formatDataFunction: async (item:any) => {
+        return new Promise( (resolve, reject) => {
+          resolve({
+            name: item._file.name,
+            length: item._file.size,
+            contentType: item._file.type,
+            date: new Date()
+          });
+        });
+      }
+    });
+
+    this.hasBaseDropZoneOver = false;
+    this.hasAnotherDropZoneOver = false;
+
+    this.response = '';
+
+    this.uploader.response.subscribe( res => this.response = res );
+
+  }
+
+  public fileOverBase(e:any):void {
+    this.hasBaseDropZoneOver = e;
+  }
+
+  public fileOverAnother(e:any):void {
+    this.hasAnotherDropZoneOver = e;
   }
 
   onItemSelect(item: any) {
