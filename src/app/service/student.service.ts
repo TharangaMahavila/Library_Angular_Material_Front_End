@@ -28,7 +28,7 @@ export class StudentService {
   selectedItems: Array<newGrade> = [];
 
   constructor(private http:HttpClient
-              ,private config:ConfigService) { }
+              ,private configService:ConfigService) { }
 
   form: FormGroup = new FormGroup({
     regNo: new FormControl('',[Validators.required,Validators.minLength(3)]),
@@ -97,7 +97,7 @@ export class StudentService {
   }
 
   getAllStudents(pageIndex: number, pageSize:number,status: boolean): Observable<Array<Student>>{
-    return this.http.get<Array<Student>>(this.config.BASE_URL+`/api/v1/students/status`,{
+    return this.http.get<Array<Student>>(this.configService.BASE_URL+`/api/v1/students/status`,{
        params: new HttpParams()
            .set('status',String(status))
            .set('size',pageSize.toString())
@@ -107,14 +107,14 @@ export class StudentService {
   }
 
   countAllStudents(status: boolean):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/students/count`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/students/count`,{
       params: new HttpParams()
           .set('status',String(status))
     });
   }
 
   countTodayAddedStudents(startDate:string, endDate:string):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/students/count/between`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/students/count/between`,{
       params: new HttpParams()
           .set('startDate',startDate)
           .set('endDate', endDate)
@@ -122,33 +122,33 @@ export class StudentService {
   }
 
   saveStudent(student: Student):Observable<Student>{
-    return this.http.post<Student>(this.config.BASE_URL+`/api/v1/students`,student);
+    return this.http.post<Student>(this.configService.BASE_URL+`/api/v1/students`,student);
   }
 
   updateStudent(student: Student):Observable<Student>{
-    return this.http.put<Student>(this.config.BASE_URL+`/api/v1/students/${student.regNo}`,student);
+    return this.http.put<Student>(this.configService.BASE_URL+`/api/v1/students/${student.regNo}`,student);
   }
 
   checkAlreadySavedStudent(regNo: string):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/students/validate/${regNo}`);
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/students/validate/${regNo}`);
   }
 
   uploadImage(image: File,id: string): Observable<String>{
     const fd = new FormData();
     fd.append('file',image,image.name);
-    return this.http.post(this.config.BASE_URL+`/api/v1/students/image/${id}`,fd,{
+    return this.http.post(this.configService.BASE_URL+`/api/v1/students/image/${id}`,fd,{
       responseType: 'text'
     });
   }
 
   deleteImage(id: string): Observable<any>{
-    return this.http.delete(this.config.BASE_URL+`/api/v1/students/image/${id}`,{
+    return this.http.delete(this.configService.BASE_URL+`/api/v1/students/image/${id}`,{
       responseType: 'text'
     });
   }
 
   searchStudentByNumber(id:string,pageIndex: number, pageSize:number): Observable<Array<Student>>{
-    return this.http.get<Array<Student>>(this.config.BASE_URL+`/api/v1/students/search`,{
+    return this.http.get<Array<Student>>(this.configService.BASE_URL+`/api/v1/students/search`,{
       params: new HttpParams()
           .set('regNo',id)
           .set('size',pageSize.toString())
@@ -158,7 +158,7 @@ export class StudentService {
   }
 
   searchStudentByName(name:string,pageIndex: number, pageSize:number): Observable<Array<Student>>{
-    return this.http.get<Array<Student>>(this.config.BASE_URL+`/api/v1/students/search`,{
+    return this.http.get<Array<Student>>(this.configService.BASE_URL+`/api/v1/students/search`,{
       params: new HttpParams()
           .set('name',name)
           .set('size',pageSize.toString())
@@ -168,21 +168,21 @@ export class StudentService {
   }
 
   countStudentByNumber(id: string):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/students/count`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/students/count`,{
       params: new HttpParams()
           .set('regNo',id)
     });
   }
 
   countStudentByName(name: string):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/students/count`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/students/count`,{
       params: new HttpParams()
           .set('name',name)
     });
   }
 
   advanceSearch(id:string,name:string,grade:string,section:string,year:string,status:string,pageIndex: number, pageSize:number): Observable<Array<Student>>{
-    return this.http.get<Array<Student>>(this.config.BASE_URL+`/api/v1/students/search`,{
+    return this.http.get<Array<Student>>(this.configService.BASE_URL+`/api/v1/students/search`,{
       params: new HttpParams()
           .set('regNo',id)
           .set('size',pageSize.toString())

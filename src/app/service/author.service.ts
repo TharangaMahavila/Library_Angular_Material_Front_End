@@ -14,17 +14,17 @@ export class AuthorService {
   isTakenAuthorName = false;
 
   constructor(private http: HttpClient
-              ,private config: ConfigService) { }
+              ,private configService: ConfigService) { }
 
   saveAuthor(name: string): Observable<Author>{
     const body:Author = {
       id:0,
       name:name
     }
-    return this.http.post<Author>(this.config.BASE_URL+`/api/v1/authors`,body);
+    return this.http.post<Author>(this.configService.BASE_URL+`/api/v1/authors`,body);
   }
 
   getAllAuthors(): Observable<Array<Author>>{
-    return this.http.get<Array<Author>>(this.config.BASE_URL+`/api/v1/authors`);
+    return this.http.get<Array<Author>>(this.configService.BASE_URL+`/api/v1/authors`);
   }
 }

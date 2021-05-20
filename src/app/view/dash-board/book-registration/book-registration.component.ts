@@ -1,7 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import {newGrade} from "../student-registration/student-registration.component";
-import {Author} from "../../../model/Author";
 import {MatDialogRef} from "@angular/material/dialog";
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import {AuthorRegistrationComponent} from "./author-registration/author-registration.component";
@@ -12,10 +10,9 @@ import {RackRegistrationComponent} from "./rack-registration/rack-registration.c
 import {BookService} from "../../../service/book.service";
 import {SupplierService} from "../../../service/supplier.service";
 import {RackService} from "../../../service/rack.service";
-import {FileUploader} from "ng2-file-upload";
+import {FileItem, FileUploader} from "ng2-file-upload";
 
-const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
-
+const URL = '/api/v1/books/uploadPdf';
 @Component({
   selector: 'app-book-registration',
   templateUrl: './book-registration.component.html',
@@ -33,6 +30,12 @@ export class BookRegistrationComponent implements OnInit {
   hasBaseDropZoneOver!:boolean;
   hasAnotherDropZoneOver!:boolean;
   response!:string;
+
+  @ViewChild('bookId')
+  txtBookId!: ElementRef;
+  @ViewChild('englishName')
+  txtEnglishName!: ElementRef;
+  timestamp = new Date().getTime();
 
   constructor(private dialogRef: MatDialogRef<BookRegistrationComponent>
       ,public bookService: BookService
@@ -201,5 +204,56 @@ export class BookRegistrationComponent implements OnInit {
 
   submitReferenceForm() {
 
+  }
+
+  singleUpload(item: FileItem) {
+    if((this.txtBookId.nativeElement as HTMLInputElement).value.trim() === ''){
+      this.configService.toastMixin.fire({
+        icon: "warning",
+        title: 'First you should fill the "BookId"'
+      });
+      return;
+    }
+      this.bookService.uploadPdf(item._file,(this.txtBookId.nativeElement as HTMLInputElement).value.trim()).subscribe(value => {
+        item.isSuccess = true;
+        item.progress = 100;
+        this.calculateQueueProgress();
+      },error => {
+        item.isError = true;
+      });
+  }
+
+  calculateQueueProgress(){
+    let successItems = 0;
+    for (const fileItem of this.uploader.queue) {
+      if(fileItem.progress === 100){
+        successItems++;
+      }
+    }
+    if(this.uploader.queue.length === 0){
+      this.uploader.progress = 0;
+      return;
+    }
+    this.uploader.progress = (100/this.uploader.queue.length)*successItems;
+  }
+
+  singleDelete(item: FileItem) {
+    if((this.txtBookId.nativeElement as HTMLInputElement).value.trim() === ''){
+      this.configService.toastMixin.fire({
+        icon: "warning",
+        title: '"BookId" cannot be empty'
+      });
+      return;
+    }
+    this.bookService.deletePdf(item._file.name,(this.txtBookId.nativeElement as HTMLInputElement).value.trim()).subscribe(value => {
+      item.progress = 0;
+      item.remove();
+      this.calculateQueueProgress();
+    },error => {
+      this.configService.toastMixin.fire({
+        icon: "error",
+        title: 'Something went wrong!'
+      });
+    });
   }
 }

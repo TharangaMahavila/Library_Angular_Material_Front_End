@@ -13,10 +13,10 @@ export class CartService {
   cartItems: Array<CartItem> = [];
 
   constructor(private http: HttpClient
-              ,private config: ConfigService) { }
+              ,private configService: ConfigService) { }
 
   getAllCartItems(userId: string): Observable<Array<CartItem>>{
-    return this.http.get<Array<CartItem>>(this.config.BASE_URL+`/api/v1/cart/${userId}`);
+    return this.http.get<Array<CartItem>>(this.configService.BASE_URL+`/api/v1/cart/${userId}`);
   }
 
   addCartItem(userId: string, refId: string): Observable<any>{
@@ -26,11 +26,11 @@ export class CartService {
       requestedAt: null,
       requestStatus: false
     }
-    return this.http.post(this.config.BASE_URL+`/api/v1/cart`,body);
+    return this.http.post(this.configService.BASE_URL+`/api/v1/cart`,body);
   }
 
   removeCartItem(userId: string, refNo: string): Observable<string>{
-    return this.http.delete(this.config.BASE_URL+`/api/v1/cart/${userId}/${refNo}`,{
+    return this.http.delete(this.configService.BASE_URL+`/api/v1/cart/${userId}/${refNo}`,{
       responseType: 'text'
     });
   }
@@ -42,7 +42,7 @@ export class CartService {
       requestedAt: new Date(),
       requestStatus: true
     }
-    return this.http.put(this.config.BASE_URL+`/api/v1/cart/${userId}/${refNo}`,body,{
+    return this.http.put(this.configService.BASE_URL+`/api/v1/cart/${userId}/${refNo}`,body,{
       responseType: 'text'
     });
   }

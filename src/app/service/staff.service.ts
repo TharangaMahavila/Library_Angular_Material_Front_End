@@ -26,7 +26,7 @@ export class StaffService {
   profileImageUrl = '';
 
   constructor(private http:HttpClient
-              ,private config: ConfigService) { }
+              ,private configService: ConfigService) { }
 
   form: FormGroup = new FormGroup({
     id: new FormControl('',[Validators.required,Validators.minLength(3)]),
@@ -91,7 +91,7 @@ export class StaffService {
   }
 
   getAllStaffs(pageIndex: number, pageSize:number,status: boolean): Observable<Array<Staff>>{
-    return this.http.get<Array<Staff>>(this.config.BASE_URL+`/api/v1/staffs/status`,{
+    return this.http.get<Array<Staff>>(this.configService.BASE_URL+`/api/v1/staffs/status`,{
       params: new HttpParams()
           .set('status',String(status))
           .set('size',pageSize.toString())
@@ -101,40 +101,40 @@ export class StaffService {
   }
 
   countAllStaffs(status: boolean):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/staffs/count`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/staffs/count`,{
       params: new HttpParams()
           .set('status',String(status))
     });
   }
 
   saveStaff(staff: Staff):Observable<Staff>{
-    return this.http.post<Staff>(this.config.BASE_URL+`/api/v1/staffs`,staff);
+    return this.http.post<Staff>(this.configService.BASE_URL+`/api/v1/staffs`,staff);
   }
 
   updateStaff(staff: Staff):Observable<Staff>{
-    return this.http.put<Staff>(this.config.BASE_URL+`/api/v1/staffs/${staff.id}`,staff);
+    return this.http.put<Staff>(this.configService.BASE_URL+`/api/v1/staffs/${staff.id}`,staff);
   }
 
   checkAlreadySavedStaff(regNo: string):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/staffs/validate/${regNo}`);
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/staffs/validate/${regNo}`);
   }
 
   uploadImage(image: File,id: string): Observable<String>{
     const fd = new FormData();
     fd.append('   ',image,image.name);
-    return this.http.post(this.config.BASE_URL+`/api/v1/staffs/image/${id}`,fd,{
+    return this.http.post(this.configService.BASE_URL+`/api/v1/staffs/image/${id}`,fd,{
       responseType: 'text'
     });
   }
 
   deleteImage(id: string): Observable<any>{
-    return this.http.delete(this.config.BASE_URL+`/api/v1/staffs/image/${id}`,{
+    return this.http.delete(this.configService.BASE_URL+`/api/v1/staffs/image/${id}`,{
       responseType: 'text'
     });
   }
 
   searchStaffByNumber(id:string,pageIndex: number, pageSize:number): Observable<Array<Staff>>{
-    return this.http.get<Array<Staff>>(this.config.BASE_URL+`/api/v1/staffs/search`,{
+    return this.http.get<Array<Staff>>(this.configService.BASE_URL+`/api/v1/staffs/search`,{
       params: new HttpParams()
           .set('regNo',id)
           .set('size',pageSize.toString())
@@ -144,7 +144,7 @@ export class StaffService {
   }
 
   searchStaffByName(name:string,pageIndex: number, pageSize:number): Observable<Array<Staff>>{
-    return this.http.get<Array<Staff>>(this.config.BASE_URL+`/api/v1/staffs/search`,{
+    return this.http.get<Array<Staff>>(this.configService.BASE_URL+`/api/v1/staffs/search`,{
       params: new HttpParams()
           .set('name',name)
           .set('size',pageSize.toString())
@@ -154,21 +154,21 @@ export class StaffService {
   }
 
   countStaffByNumber(id: string):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/staffs/count`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/staffs/count`,{
       params: new HttpParams()
           .set('regNo',id)
     });
   }
 
   countStaffByName(name: string):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/staffs/count`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/staffs/count`,{
       params: new HttpParams()
           .set('name',name)
     });
   }
 
   advanceSearch(id:string,name:string,grade:string,section:string,year:string,status:string,pageIndex: number, pageSize:number): Observable<Array<Staff>>{
-    return this.http.get<Array<Staff>>(this.config.BASE_URL+`/api/v1/staffs/search`,{
+    return this.http.get<Array<Staff>>(this.configService.BASE_URL+`/api/v1/staffs/search`,{
       params: new HttpParams()
           .set('regNo',id)
           .set('size',pageSize.toString())
@@ -178,7 +178,7 @@ export class StaffService {
   }
 
   countAddedStaffsBetweenPeriod(startDate:string, endDate:string):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/staffs/count/between`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/staffs/count/between`,{
       params: new HttpParams()
           .set('startDate',startDate)
           .set('endDate',endDate)

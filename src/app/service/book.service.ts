@@ -3,9 +3,9 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
 import {BookCustom} from "../model/BookCustom";
 import {catchError, retry} from "rxjs/operators";
-import {ConfigService} from "./config.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ConfigService} from "./config.service";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class BookService {
   dataSource = new MatTableDataSource<BookCustom>();
   profileImageUrl = '';
 
-  constructor(private http:HttpClient,private config: ConfigService) { }
+  constructor(private http:HttpClient,private configService: ConfigService) { }
 
   form: FormGroup = new FormGroup({
     bookId: new FormControl('',[Validators.required]),
@@ -60,7 +60,7 @@ export class BookService {
   }
 
   getAllBooks(pageIndex: number, pageSize:number,status: boolean): Observable<Array<BookCustom>>{
-    return this.http.get<Array<BookCustom>>(this.config.BASE_URL+`/api/v1/books/allBooks`,{
+    return this.http.get<Array<BookCustom>>(this.configService.BASE_URL+`/api/v1/books/allBooks`,{
       params: new HttpParams()
           .set('status',String(status))
           .set('size',pageSize.toString())
@@ -70,19 +70,19 @@ export class BookService {
   }
 
   searchBookByName(searchKey: string,pageSize: string, pageIndex: string):Observable<Array<BookCustom>>{
-    return this.http.get<Array<BookCustom>>(this.config.BASE_URL+`/api/v1/books/searchByName`,{
+    return this.http.get<Array<BookCustom>>(this.configService.BASE_URL+`/api/v1/books/searchByName`,{
       params: new HttpParams()
           .set('name',searchKey)
           .set('size',pageSize)
           .set('page',pageIndex)
     }).pipe(
         retry(3),
-        catchError(this.config.handleError)
+        catchError(this.configService.handleError)
     );
   }
 
   searchBookByRefNo(searchKey: string,pageSize: number, pageIndex: number):Observable<Array<BookCustom>>{
-    return this.http.get<Array<BookCustom>>(this.config.BASE_URL+`/api/v1/books/searchByRefNo`,{
+    return this.http.get<Array<BookCustom>>(this.configService.BASE_URL+`/api/v1/books/searchByRefNo`,{
       params: new HttpParams()
           .set('name',searchKey)
           .set('size',pageSize.toString())
@@ -91,14 +91,14 @@ export class BookService {
   }
 
   countBookByRefNumber(id: string):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/books/count`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/books/count`,{
       params: new HttpParams()
           .set('refNo',id)
     });
   }
 
   searchBookByAuthor(searchKey: string,pageSize: string, pageIndex: string):Observable<Array<BookCustom>>{
-    return this.http.get<Array<BookCustom>>(this.config.BASE_URL+`/api/v1/books/searchByAuthor`,{
+    return this.http.get<Array<BookCustom>>(this.configService.BASE_URL+`/api/v1/books/searchByAuthor`,{
       params: new HttpParams()
           .set('name',searchKey)
           .set('size',pageSize)
@@ -107,14 +107,14 @@ export class BookService {
   }
 
   countAllBooks(status: boolean):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/books/count`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/books/count`,{
       params: new HttpParams()
           .set('status',String(status))
     });
   }
 
   countAddedBooksBetweenPeriod(startDate:string, endDate:string):Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/books/count/between`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/books/count/between`,{
       params: new HttpParams()
           .set('startDate',startDate)
           .set('endDate',endDate)
@@ -122,16 +122,31 @@ export class BookService {
   }
 
   searchBookCountByName(searchKey: string): Observable<number>{
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/books/searchCountByName`,{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/books/searchCountByName`,{
       params: new HttpParams()
           .set('name',searchKey)
     });
   }
 
   searchBookCountByAuthor(searchKey: string): Observable<number> {
-    return this.http.get<number>(this.config.BASE_URL+`/api/v1/books/searchCountByAuthor`, {
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/books/searchCountByAuthor`, {
       params: new HttpParams()
           .set('name', searchKey)
+    });
+  }
+
+  uploadPdf(pdf: File,id: string): Observable<String>{
+    const fd = new FormData();
+    fd.append('pdf',pdf,pdf.name);
+    return this.http.post(this.configService.BASE_URL+`/api/v1/books/uploadPdf/${id}`,fd,{
+      responseType: 'text'
+    });
+  }
+
+  deletePdf(pdfName: string,id: string): Observable<String>{
+    return this.http.delete(this.configService.BASE_URL+`/api/v1/books/deletePdf/${id}`,{
+      params: new HttpParams().set('pdf',pdfName),
+      responseType: 'text'
     });
   }
 

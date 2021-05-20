@@ -1,12 +1,12 @@
 import {Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {ConfigService} from "./config.service";
 import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {User} from "../model/User";
 import {Router} from "@angular/router";
 import {Staff} from "../model/Staff";
 import {Student} from "../model/Student";
+import {ConfigService} from "./config.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class UserService{
   currentStaffUser!: Staff;
 
   constructor(private http: HttpClient
-              ,private config:ConfigService
+              ,private configService:ConfigService
               ,private router: Router) {}
 
   authenticate(uname:string,pwd:string):Observable<any>{
@@ -25,7 +25,7 @@ export class UserService{
       username: uname,
       password: pwd
     }
-    return this.http.post(this.config.BASE_URL+`/api/v1/authenticate`,body,{
+    return this.http.post(this.configService.BASE_URL+`/api/v1/authenticate`,body,{
       responseType: 'text'
     });
   }
@@ -35,7 +35,7 @@ export class UserService{
     if(token === null){
       return throwError('Invalid token');
     }else {
-      return this.http.get<User>(this.config.BASE_URL+`/api/v1/users`);
+      return this.http.get<User>(this.configService.BASE_URL+`/api/v1/users`);
     }
   }
 
@@ -44,7 +44,7 @@ export class UserService{
     if(token === null){
       return throwError('Invalid token');
     }else {
-      return this.http.get<Staff>(this.config.BASE_URL+`/api/v1/users/adminUser`);
+      return this.http.get<Staff>(this.configService.BASE_URL+`/api/v1/users/adminUser`);
     }
   }
 
@@ -53,7 +53,7 @@ export class UserService{
     if(token === null){
       return throwError('Invalid token');
     }else {
-      return this.http.get<Staff>(this.config.BASE_URL+`/api/v1/users/staffUser`);
+      return this.http.get<Staff>(this.configService.BASE_URL+`/api/v1/users/staffUser`);
     }
   }
 
@@ -62,7 +62,7 @@ export class UserService{
     if(token === null){
       return throwError('Invalid token');
     }else {
-      return this.http.get<Student>(this.config.BASE_URL+`/api/v1/users/studentUser`);
+      return this.http.get<Student>(this.configService.BASE_URL+`/api/v1/users/studentUser`);
     }
   }
 }

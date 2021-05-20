@@ -10,12 +10,12 @@ import {ConfigService} from "./config.service";
 export class MessageService {
 
   constructor(private http: HttpClient
-              ,private config: ConfigService) { }
+              ,private configService: ConfigService) { }
 
   sendCommonMessage(message: string): Observable<any>{
     const body = {
       messageContent: message
     }
-    return this.http.post<Author>(this.config.BASE_URL+`/api/v1/messages/send-common-message`,body);
+    return this.http.post<Author>(this.configService.BASE_URL+`/api/v1/messages/send-common-message`,body);
   }
 }

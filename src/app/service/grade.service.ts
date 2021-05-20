@@ -10,9 +10,9 @@ import {ConfigService} from "./config.service";
 export class GradeService {
 
   constructor(private http:HttpClient
-              ,private config:ConfigService) { }
+              ,private configService:ConfigService) { }
 
   getAllGrades(): Observable<Array<Grade>>{
-    return this.http.get<Array<Grade>>(this.config.BASE_URL+`/api/v1/grades`);
+    return this.http.get<Array<Grade>>(this.configService.BASE_URL+`/api/v1/grades`);
   }
 }
