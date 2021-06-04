@@ -18,8 +18,7 @@
   background-color: white;
   border-radius: 50%;
   border: 1px solid black;
-  background-image: url("../../../../assets/images/user-picture.png");
-  background-size: cover;
+  background-size: cover !important;
 
   .edit{
     display: flex;
@@ -43,6 +42,9 @@
     }
   }
   .mask{
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 150px;
     height: 150px;
     border-radius: 50%;

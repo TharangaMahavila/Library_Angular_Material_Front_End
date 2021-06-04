@@ -6,6 +6,8 @@ import {catchError, retry} from "rxjs/operators";
 import {MatTableDataSource} from "@angular/material/table";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ConfigService} from "./config.service";
+import {Student} from "../model/Student";
+import {Book} from "../model/Book";
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +35,7 @@ export class BookService {
     sinhalaName: new FormControl('',[Validators.required]),
     year: new FormControl('',[Validators.pattern('^[12][0-9]{3}$')]),
     price: new FormControl('',[Validators.pattern('^[0-9]*$')]),
-    medium: new FormControl('Sinhala',[Validators.required]),
+    medium: new FormControl('SINHALA',[Validators.required]),
     pages: new FormControl('',[Validators.pattern('^[0-9]*$')]),
     note: new FormControl(''),
     image: new FormControl(''),
@@ -150,6 +152,28 @@ export class BookService {
     });
   }
 
+  uploadImage(image: File,id: string): Observable<String>{
+    const fd = new FormData();
+    fd.append('file',image,image.name);
+    return this.http.post(this.configService.BASE_URL+`/api/v1/books/image/${id}`,fd,{
+      responseType: 'text'
+    });
+  }
+
+  deleteImage(id: string): Observable<any>{
+    return this.http.delete(this.configService.BASE_URL+`/api/v1/books/image/${id}`,{
+      responseType: 'text'
+    });
+  }
+
+  checkAlreadySavedBook(bookId: string):Observable<number>{
+    return this.http.get<number>(this.configService.BASE_URL+`/api/v1/books/validate/${bookId}`);
+  }
+
+  saveBook(book: Book):Observable<Book>{
+    return this.http.post<Book>(this.configService.BASE_URL+`/api/v1/books`,book);
+  }
+
   initializeFormGroup(){
     this.form.setValue({
       bookId: '',
@@ -157,7 +181,7 @@ export class BookService {
       sinhalaName: '',
       year: '',
       price: '',
-      medium: 'Sinhala',
+      medium: 'SINHALA',
       pages: '',
       note: '',
       image: '',
