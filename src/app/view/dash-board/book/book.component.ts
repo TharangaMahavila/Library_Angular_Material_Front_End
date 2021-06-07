@@ -132,10 +132,6 @@ export class BookComponent implements OnInit {
   }
 
   openRegisterForm(){
-    this.authorService.selectedItems.length = 0;
-    this.supplierService.selectedItems.length = 0;
-    this.rackService.selectedItemsRack.length = 0;
-
     this.bookService.mode = 'add';
     this.bookService.initializeFormGroup();
     this.bookService.profileImageUrl = '';

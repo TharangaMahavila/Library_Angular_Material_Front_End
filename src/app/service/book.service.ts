@@ -34,7 +34,7 @@ export class BookService {
     englishName: new FormControl('',[Validators.required]),
     sinhalaName: new FormControl('',[Validators.required]),
     year: new FormControl('',[Validators.pattern('^[12][0-9]{3}$')]),
-    price: new FormControl('',[Validators.pattern('^[0-9]*$')]),
+    price: new FormControl('',[Validators.pattern('^\\d{0,8}(\\.\\d{1,4})?$')]),
     medium: new FormControl('SINHALA',[Validators.required]),
     pages: new FormControl('',[Validators.pattern('^[0-9]*$')]),
     note: new FormControl(''),
@@ -154,7 +154,7 @@ export class BookService {
 
   uploadImage(image: File,id: string): Observable<String>{
     const fd = new FormData();
-    fd.append('file',image,image.name);
+    fd.append('image',image,image.name);
     return this.http.post(this.configService.BASE_URL+`/api/v1/books/image/${id}`,fd,{
       responseType: 'text'
     });
